@@ -269,7 +269,7 @@ void MainWindow::onNameChanged(const QString& name)
 
 void MainWindow::onDelayChanged(int delay)
 {
-	if (m_selectedTimer < 0) return;
+	if (m_selectedTimer < 0 || m_model->isTimerStarted(m_selectedTimer)) return;
 
 	Timer& timer = m_model->getTimer(m_selectedTimer);
 
