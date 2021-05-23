@@ -173,6 +173,8 @@ void TimerModel::onTimeout()
 {
 	QObject* t = sender();
 
+	if (!t || !t->property("row").isValid()) return;
+
 	int row = t->property("row").toInt();
 
 	Timer& timer = m_timers[row];
