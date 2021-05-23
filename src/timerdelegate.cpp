@@ -34,12 +34,12 @@ void TimerDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 		painter->fillRect(option.rect, option.palette.highlight());
 	}
 
-	QString name = index.data().toString();
+	QString time = index.data().toString();
 
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing);
 
-	drawString(name, option, *painter);
+	drawString(time, option, *painter);
 
 	painter->restore();
 }

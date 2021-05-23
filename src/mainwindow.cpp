@@ -58,6 +58,11 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 	m_ui->timersListView->setModel(m_model);
 	m_ui->timersListView->setItemDelegate(new TimerDelegate(this));
 
+	connect(m_model, &TimerModel::timerFinished, this, &MainWindow::onTimerFinished);
+
+	// Selection model
+	connect(m_ui->timersListView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::onTimerSelected);
+
 	// check for a new version
 	m_updater = new Updater(this);
 
@@ -178,6 +183,8 @@ void MainWindow::onSaveAs()
 void MainWindow::onAddClicked()
 {
 	m_model->addTimer(m_currentTimer);
+
+	m_ui->timersListView->selectionModel()->setCurrentIndex(m_model->index(m_model->rowCount() - 1, 0), QItemSelectionModel::ClearAndSelect);
 }
 
 void MainWindow::onRemoveClicked()
@@ -189,10 +196,20 @@ void MainWindow::onRemoveClicked()
 
 void MainWindow::onStartClicked()
 {
+	if (m_selectedTimer < 0) return;
+
+	m_model->startTimer(m_selectedTimer);
+
+	updateButtons();
 }
 
 void MainWindow::onStopClicked()
 {
+	if (m_selectedTimer < 0) return;
+
+	m_model->stopTimer(m_selectedTimer);
+
+	updateButtons();
 }
 
 void MainWindow::updateTimerFromCurrent()
@@ -203,10 +220,45 @@ void MainWindow::updateTimerFromCurrent()
 	}
 }
 
+void MainWindow::updateCurrentFromTimer()
+{
+	if (m_selectedTimer > -1)
+	{
+		displayTimer(m_selectedTimer);
+	}
+	else
+	{
+		m_ui->nameEdit->setText(tr("No name"));
+
+		m_ui->hoursSpinBox->setValue(0);
+		m_ui->minutesSpinBox->setValue(0);
+		m_ui->secondsSpinBox->setValue(0);
+	}
+}
+
+int MainWindow::toTimestamp()
+{
+	return ::toTimestamp(m_ui->hoursSpinBox->value(), m_ui->minutesSpinBox->value(), m_ui->secondsSpinBox->value());
+}
+
+bool MainWindow::fromTimeStamp(int time)
+{
+	int h, m, s;
+
+	if (!::fromTimeStamp(time, &h, &m, &s)) return false;
+
+	m_ui->hoursSpinBox->setValue(h);
+	m_ui->minutesSpinBox->setValue(m);
+	m_ui->secondsSpinBox->setValue(s);
+
+	return true;
+}
+
 void MainWindow::onNameChanged(const QString& name)
 {
 	m_currentTimer.name = name;
 
+	updateButtons();
 	updateTimerFromCurrent();
 }
 
@@ -225,7 +277,31 @@ void MainWindow::onDelayChanged(int delay)
 		m_currentTimer.delaySeconds = delay;
 	}
 
+	m_currentTimer.restDelay = ::toTimestamp(m_currentTimer.delayHours, m_currentTimer.delayMinutes, m_currentTimer.delaySeconds);
+
 	updateTimerFromCurrent();
+}
+
+void MainWindow::onTimerFinished(int row)
+{
+	updateButtons();
+
+	SystrayIcon::getInstance()->displayMessage("yeah", SystrayIcon::ActionNone);
+}
+
+void MainWindow::onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected)
+{
+	if (selected.isEmpty())
+	{
+		m_selectedTimer = -1;
+	}
+	else
+	{
+		m_selectedTimer = selected.indexes().front().row();
+	}
+
+	updateCurrentFromTimer();
+	updateButtons();
 }
 
 void MainWindow::displayTimer(int i)
@@ -243,11 +319,17 @@ void MainWindow::displayTimer(int i)
 
 void MainWindow::updateButtons()
 {
-	m_ui->addButton->setEnabled(true);
+	bool timerStarted = m_selectedTimer > -1 && m_model->isTimerStarted(m_selectedTimer);
+
+	m_ui->hoursSpinBox->setEnabled(!timerStarted);
+	m_ui->minutesSpinBox->setEnabled(!timerStarted);
+	m_ui->secondsSpinBox->setEnabled(!timerStarted);
+
+	m_ui->addButton->setEnabled(!m_ui->nameEdit->text().isEmpty());
 	m_ui->removeButton->setEnabled(m_selectedTimer > -1);
 
-	m_ui->startButton->setEnabled(m_selectedTimer > -1);
-	m_ui->stopButton->setEnabled(m_selectedTimer > -1);
+	m_ui->startButton->setEnabled(!timerStarted);
+	m_ui->stopButton->setEnabled(timerStarted);
 }
 
 void MainWindow::onCheckUpdates()

@@ -51,8 +51,7 @@ int TimerModel::rowCount(const QModelIndex &parent) const
 
 int TimerModel::columnCount(const QModelIndex &parent) const
 {
-	// name, type, original position, delay, duration, last position, count
-	return TimerColumnLast;
+	return 1;
 }
 
 QVariant TimerModel::data(const QModelIndex &index, int role) const
@@ -61,15 +60,19 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		switch (index.column())
-		{
-			case TimerColumnName: return m_timers[index.row()].name;
-			case TimerColumnDelayHours: return m_timers[index.row()].delayHours;
-			case TimerColumnDelayMinutes: return m_timers[index.row()].delayMinutes;
-			case TimerColumnDelaySeconds: return m_timers[index.row()].delaySeconds;
-		}
+		return m_timers[index.row()].getDelayString();
 	}
-	
+
+	if (role == Qt::ToolTipRole)
+	{
+		return m_timers[index.row()].name;
+	}
+
+	if (role == Qt::ForegroundRole)
+	{
+		return m_timers[index.row()].color;
+	}
+
 	return QVariant();
 }
 
@@ -81,18 +84,11 @@ bool TimerModel::setData(const QModelIndex &index, const QVariant &value, int ro
 		if (!checkIndex(index)) return false;
 #endif
 
-		// save value
-		switch (index.column())
-		{
-			case TimerColumnName: m_timers[index.row()].name = value.toString(); break;
-			case TimerColumnDelayHours: m_timers[index.row()].delayHours = value.toInt(); break;
-			case TimerColumnDelayMinutes: m_timers[index.row()].delayMinutes = value.toInt(); break;
-			case TimerColumnDelaySeconds: m_timers[index.row()].delaySeconds = value.toInt(); break;
-			default: return false;
-		}
+		m_timers[index.row()].name = value.toString();
+
+		emit dataChanged(index, index, { Qt::DisplayRole });
 
 		return true;
-
 	}
 
 	return false;
@@ -219,9 +215,69 @@ Timer TimerModel::getTimer(int row) const
 
 void TimerModel::setTimer(int row, const Timer& timer)
 {
-	m_timers[row] = timer;
+	m_timers[row].set(timer, !isTimerStarted(row));
 
-	emit dataChanged(index(row, 0), index(row, TimerColumnLast-1), { Qt::DisplayRole, Qt::EditRole });
+	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole, Qt::ForegroundRole });
+}
+
+bool TimerModel::startTimer(int row)
+{
+	Timer& timer = m_timers[row];
+
+	if (timer.timer) return false;
+
+	timer.timer = new QTimer(this);
+	timer.timer->setInterval(1000);
+	timer.timer->start();
+	timer.timer->setProperty("row", row);
+
+	timer.restDelay = toTimestamp(timer.delayHours, timer.delayMinutes, timer.delaySeconds);
+
+	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
+
+	connect(timer.timer, &QTimer::timeout, this, &TimerModel::onTimeout);
+
+	return true;
+}
+
+bool TimerModel::stopTimer(int row)
+{
+	Timer& timer = m_timers[row];
+
+	if (!timer.timer) return false;
+
+	timer.timer->stop();
+	timer.timer->deleteLater();
+	timer.timer = nullptr;
+
+	timer.restDelay = 0;
+
+	return true;
+}
+
+bool TimerModel::isTimerStarted(int row)
+{
+	return m_timers[row].timer && m_timers[row].timer->isActive();
+}
+
+void TimerModel::onTimeout()
+{
+	QObject* t = sender();
+
+	int row = t->property("row").toInt();
+
+	Timer& timer = m_timers[row];
+
+	--timer.restDelay;
+
+	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
+
+	if (timer.restDelay < 1)
+	{
+		stopTimer(row);
+
+		emit timerFinished(row);
+	}
 }
 
 void TimerModel::reset()

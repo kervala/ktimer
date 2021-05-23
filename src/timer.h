@@ -20,17 +20,14 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+int toTimestamp(int h, int m, int s);
+bool fromTimeStamp(int time, int* h, int* m, int* s);
+
 class Timer
 {
 public:
-	Timer():delayHours(0), delayMinutes(0), delaySeconds(0), restDelay(0), timer(nullptr)
-	{
-	}
-
-	Timer(const Timer& other)
-	{
-		set(other);
-	}
+	Timer();
+	Timer(const Timer& other);
 
 	QString name;
 
@@ -38,17 +35,15 @@ public:
 	int delayMinutes;
 	int delaySeconds;
 
+	QColor color;
+
 	int restDelay;
 
 	QTimer *timer;
 
-	void set(const Timer& other)
-	{
-		name = other.name;
-		delayHours = other.delayHours;
-		delayMinutes = other.delayMinutes;
-		delaySeconds = other.delaySeconds;
-	}
+	void set(const Timer& other, bool updateRest);
+
+	QString getDelayString() const;
 };
 
 QDataStream& operator << (QDataStream& stream, const Timer& timer);
