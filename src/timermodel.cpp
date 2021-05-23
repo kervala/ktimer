@@ -60,7 +60,7 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		return m_timers[index.row()].getDelayString();
+		return m_timers[index.row()].getRestString();
 	}
 
 	if (role == Qt::ToolTipRole)
@@ -70,37 +70,15 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::ForegroundRole)
 	{
+		if (m_timers[index.row()].restDelay < 0 && (m_timers[index.row()].restDelay % 2 == 0))
+		{
+			return QColor(Qt::color1);
+		}
+
 		return m_timers[index.row()].color;
 	}
 
 	return QVariant();
-}
-
-bool TimerModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (role == Qt::DisplayRole || role == Qt::EditRole)
-	{
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
-		if (!checkIndex(index)) return false;
-#endif
-
-		m_timers[index.row()].name = value.toString();
-
-		emit dataChanged(index, index, { Qt::DisplayRole });
-
-		return true;
-	}
-
-	return false;
-}
-
-Qt::ItemFlags TimerModel::flags(const QModelIndex &index) const
-{
-	Qt::ItemFlags flags = Qt::ItemIsDropEnabled | QAbstractTableModel::flags(index);
-
-	if (index.isValid()) flags |= Qt::ItemIsEditable | Qt::ItemIsDragEnabled;
-
-	return flags;
 }
 
 bool TimerModel::insertRows(int position, int rows, const QModelIndex& parent)
@@ -143,81 +121,9 @@ bool TimerModel::removeRows(int position, int rows, const QModelIndex& parent)
 	return true;
 }
 
-Qt::DropActions TimerModel::supportedDropActions() const
-{
-	return Qt::MoveAction | Qt::CopyAction;
-}
-
-QStringList TimerModel::mimeTypes() const
-{
-	QStringList types;
-	types << "application/x-autoclicker";
-	return types;
-}
-
-QMimeData* TimerModel::mimeData(const QModelIndexList &indexes) const
-{
-	QMimeData* mimeData = new QMimeData();
-	QByteArray encodedData;
-
-	QDataStream stream(&encodedData, QIODevice::WriteOnly);
-
-	foreach(const QModelIndex &index, indexes)
-	{
-		if (index.isValid())
-		{
-			stream << m_timers[index.row()];
-		}
-	}
-
-	mimeData->setData("application/x-autoclicker", encodedData);
-
-	return mimeData;
-}
-
-bool TimerModel::dropMimeData(const QMimeData* data, Qt::DropAction timerType, int row, int column, const QModelIndex& parent)
-{
-	if (!data->hasFormat("application/x-autoclicker")) return false;
-
-	if (timerType == Qt::IgnoreAction) return true;
-
-	bool insertAtTheEnd = row == -1;
-
-	if (row == -1) row = rowCount();
-
-	QByteArray encodedData = data->data("application/x-autoclicker");
-	QDataStream stream(&encodedData, QIODevice::ReadOnly);
-
-	Timer timer;
-
-	stream >> timer;
-
-	beginInsertRows(QModelIndex(), row, row);
-
-	if (insertAtTheEnd)
-	{
-		m_timers.push_back(timer);
-	}
-	else
-	{
-		m_timers.insert(row, timer);
-	}
-
-	endInsertRows();
-
-	return true;
-}
-
-Timer TimerModel::getTimer(int row) const
+Timer& TimerModel::getTimer(int row)
 {
 	return m_timers[row];
-}
-
-void TimerModel::setTimer(int row, const Timer& timer)
-{
-	m_timers[row].set(timer, !isTimerStarted(row));
-
-	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole, Qt::ForegroundRole });
 }
 
 bool TimerModel::startTimer(int row)
@@ -257,6 +163,8 @@ bool TimerModel::stopTimer(int row)
 
 bool TimerModel::isTimerStarted(int row)
 {
+	if (row >= m_timers.size()) return false;
+
 	return m_timers[row].timer && m_timers[row].timer->isActive();
 }
 
@@ -272,10 +180,8 @@ void TimerModel::onTimeout()
 
 	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
 
-	if (timer.restDelay < 1)
+	if (timer.restDelay == 0)
 	{
-		stopTimer(row);
-
 		emit timerFinished(row);
 	}
 }
@@ -289,14 +195,6 @@ void TimerModel::reset()
 	m_timers.clear();
 
 	endResetModel();
-}
-
-void TimerModel::resetCount()
-{
-	for (int i = 0; i < m_timers.size(); ++i)
-	{
-		Timer& timer = m_timers[i];
-	}
 }
 
 bool TimerModel::load(const QString& filename)
@@ -370,11 +268,11 @@ bool TimerModel::save(const QString& filename)
 	return true;
 }
 
-bool TimerModel::addTimer(const Timer& timer)
+bool TimerModel::newTimer()
 {
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 
-	m_timers.append(timer);
+	m_timers.append(Timer());
 
 	endInsertRows();
 	return true;
@@ -390,17 +288,12 @@ bool TimerModel::removeTimer(int i)
 	return true;
 }
 
+void TimerModel::updateTimer(int row)
+{
+	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole, Qt::ForegroundRole });
+}
+
 QString TimerModel::getFilename() const
 {
 	return m_filename;
-}
-
-TimerModel* TimerModel::clone(QObject *parent) const
-{
-	TimerModel* res = new TimerModel(parent);
-
-	res->m_timers = m_timers;
-	res->m_filename = m_filename;
-
-	return res;
 }

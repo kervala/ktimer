@@ -129,11 +129,11 @@ void SystrayIcon::setStatus(SystrayStatus status)
 	updateStatus();
 }
 
-void SystrayIcon::displayMessage(const QString &message, SystrayAction action)
+void SystrayIcon::displayMessage(const QString &title, const QString &message, SystrayAction action)
 {
 	m_action = action;
 	
-	if (m_icon) m_icon->showMessage("", message, QSystemTrayIcon::NoIcon);
+	if (m_icon) m_icon->showMessage(title, message, QSystemTrayIcon::Information/*NoIcon*/);
 }
 
 void SystrayIcon::update()

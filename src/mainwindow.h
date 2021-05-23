@@ -42,6 +42,7 @@ public:
 
 public slots:
 	// buttons
+	void onColorClicked();
 	void onAddClicked();
 	void onRemoveClicked();
 	void onStartClicked();
@@ -86,9 +87,6 @@ protected:
 	void displayTimer(int i);
 	void updateButtons();
 
-	void updateTimerFromCurrent();
-	void updateCurrentFromTimer();
-
 	int toTimestamp();
 	bool fromTimeStamp(int time);
 
@@ -97,8 +95,6 @@ protected:
 	Ui::MainWindow *m_ui;
 
 	Updater *m_updater;
-
-	Timer m_currentTimer;
 
 	int m_selectedTimer;
 

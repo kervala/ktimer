@@ -40,7 +40,7 @@ SET(VERSION_MINOR 0)
 SET(VERSION_PATCH "REVISION")
 SET(AUTHOR "Kervala")
 SET(PRODUCT "SimpleTimer")
-SET(DESCRIPTION "Timer with notifications")
+SET(DESCRIPTION "SimpleTimer by Kervala")
 SET(TARGET "simpletimer")
 SET(YEAR "2021-${CURRENT_YEAR}")
 

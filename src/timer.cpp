@@ -40,7 +40,7 @@ bool fromTimeStamp(int time, int* h, int* m, int* s)
 	return true;
 }
 
-Timer::Timer():delayHours(0), delayMinutes(0), delaySeconds(0), restDelay(0), timer(nullptr)
+Timer::Timer():delayHours(0), delayMinutes(0), delaySeconds(0), restDelay(0), timer(nullptr), color(Qt::color0)
 {
 }
 
@@ -65,13 +65,30 @@ void Timer::set(const Timer& other, bool updateRest)
 
 QString Timer::getDelayString() const
 {
-	//return QString("%1:%2:%3").arg(delayHours, 2, 10, QChar('0')).arg(delayMinutes, 2, 10, QChar('0')).arg(delaySeconds, 2, 10, QChar('0'));
+	return QString("%1:%2:%3").arg(delayHours, 2, 10, QChar('0')).arg(delayMinutes, 2, 10, QChar('0')).arg(delaySeconds, 2, 10, QChar('0'));
+}
 
+QString Timer::getRestString() const
+{
 	int h, m, s;
 
-	if (!fromTimeStamp(restDelay, &h, &m, &s)) return QString("##:##:##");
+	if (restDelay > -1)
+	{
+		if (!fromTimeStamp(restDelay, &h, &m, &s)) return QString("##:##:##");
+	}
+	else
+	{
+		h = 0;
+		m = 0;
+		s = 0;
+	}
 
 	return QString("%1:%2:%3").arg(h, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0')).arg(s, 2, 10, QChar('0'));
+}
+
+void Timer::updateRestDelay()
+{
+	restDelay = toTimestamp(delayHours, delayMinutes, delaySeconds);
 }
 
 QDataStream& operator << (QDataStream& stream, const Timer &timer)
@@ -83,7 +100,7 @@ QDataStream& operator << (QDataStream& stream, const Timer &timer)
 
 QDataStream& operator >> (QDataStream& stream, Timer& timer)
 {
-	stream >> timer.name >> timer.delayHours << timer.delayMinutes << timer.delaySeconds << timer.color;
+	stream >> timer.name >> timer.delayHours >> timer.delayMinutes >> timer.delaySeconds >> timer.color;
 
 	return stream;
 }
