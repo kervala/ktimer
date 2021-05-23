@@ -282,6 +282,8 @@ bool TimerModel::removeTimer(int i)
 {
 	beginRemoveRows(QModelIndex(), i, i);
 
+	stopTimer(i);
+
 	m_timers.removeAt(i);
 
 	endRemoveRows();
