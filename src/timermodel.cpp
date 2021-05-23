@@ -132,12 +132,13 @@ bool TimerModel::startTimer(int row)
 
 	if (timer.timer) return false;
 
+	timer.restDelay = toTimestamp(timer.delayHours, timer.delayMinutes, timer.delaySeconds);
+	timer.timerRunning = true;
+
 	timer.timer = new QTimer(this);
 	timer.timer->setInterval(1000);
 	timer.timer->start();
 	timer.timer->setProperty("row", row);
-
-	timer.restDelay = toTimestamp(timer.delayHours, timer.delayMinutes, timer.delaySeconds);
 
 	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
 
@@ -150,22 +151,22 @@ bool TimerModel::stopTimer(int row)
 {
 	Timer& timer = m_timers[row];
 
+	timer.timerRunning = false;
+
 	if (!timer.timer) return false;
 
 	timer.timer->stop();
 	timer.timer->deleteLater();
 	timer.timer = nullptr;
 
-	timer.restDelay = 0;
-
 	return true;
 }
 
-bool TimerModel::isTimerStarted(int row)
+bool TimerModel::isTimerRunning(int row)
 {
-	if (row >= m_timers.size()) return false;
+	if (row < 0 || row >= m_timers.size()) return false;
 
-	return m_timers[row].timer && m_timers[row].timer->isActive();
+	return m_timers[row].timerRunning;
 }
 
 void TimerModel::onTimeout()

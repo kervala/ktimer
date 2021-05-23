@@ -46,7 +46,7 @@ public:
 
 	bool startTimer(int row);
 	bool stopTimer(int row);
-	bool isTimerStarted(int row);
+	bool isTimerRunning(int row);
 
 	void reset();
 

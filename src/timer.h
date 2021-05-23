@@ -41,7 +41,7 @@ public:
 
 	QTimer *timer;
 
-	void set(const Timer& other, bool updateRest);
+	bool timerRunning;
 
 	QString getDelayString() const;
 	QString getRestString() const;

@@ -269,7 +269,7 @@ void MainWindow::onNameChanged(const QString& name)
 
 void MainWindow::onDelayChanged(int delay)
 {
-	if (m_selectedTimer < 0 || m_model->isTimerStarted(m_selectedTimer)) return;
+	if (m_selectedTimer < 0 || m_model->isTimerRunning(m_selectedTimer)) return;
 
 	Timer& timer = m_model->getTimer(m_selectedTimer);
 
@@ -329,7 +329,7 @@ void MainWindow::displayTimer(int i)
 
 void MainWindow::updateButtons()
 {
-	bool timerStarted = m_selectedTimer > -1 && m_model->isTimerStarted(m_selectedTimer);
+	bool timerRunning = m_selectedTimer > -1 && m_model->isTimerRunning(m_selectedTimer);
 
 	Timer& timer = m_model->getTimer(m_selectedTimer);
 
@@ -343,15 +343,15 @@ void MainWindow::updateButtons()
 	QIcon icon(pixmap);
 	m_ui->colorButton->setIcon(icon);
 
-	m_ui->hoursSpinBox->setEnabled(!timerStarted);
-	m_ui->minutesSpinBox->setEnabled(!timerStarted);
-	m_ui->secondsSpinBox->setEnabled(!timerStarted);
+	m_ui->hoursSpinBox->setEnabled(!timerRunning);
+	m_ui->minutesSpinBox->setEnabled(!timerRunning);
+	m_ui->secondsSpinBox->setEnabled(!timerRunning);
 
 	m_ui->addButton->setEnabled(true);
 	m_ui->removeButton->setEnabled(m_selectedTimer > -1 && m_model->rowCount() > 1);
 
-	m_ui->startButton->setEnabled(!timerStarted);
-	m_ui->stopButton->setEnabled(timerStarted);
+	m_ui->startButton->setEnabled(!timerRunning);
+	m_ui->stopButton->setEnabled(timerRunning);
 }
 
 void MainWindow::onCheckUpdates()

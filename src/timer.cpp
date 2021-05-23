@@ -40,27 +40,13 @@ bool fromTimeStamp(int time, int* h, int* m, int* s)
 	return true;
 }
 
-Timer::Timer():delayHours(0), delayMinutes(0), delaySeconds(0), restDelay(0), timer(nullptr), color(Qt::color0)
+Timer::Timer():delayHours(0), delayMinutes(0), delaySeconds(0), color(Qt::color0), restDelay(0), timer(nullptr), timerRunning(false)
 {
 }
 
-Timer::Timer(const Timer& other):restDelay(0), timer(nullptr)
+Timer::Timer(const Timer& other):name(other.name), delayHours(other.delayHours), delayMinutes(other.delayMinutes), delaySeconds(other.delaySeconds),
+	color(other.color), restDelay(other.restDelay), timer(other.timer), timerRunning(other.timerRunning)
 {
-	set(other, true);
-}
-
-void Timer::set(const Timer& other, bool updateRest)
-{
-	name = other.name;
-	delayHours = other.delayHours;
-	delayMinutes = other.delayMinutes;
-	delaySeconds = other.delaySeconds;
-	color = other.color;
-
-	if (updateRest)
-	{
-		restDelay = other.restDelay;
-	}
 }
 
 QString Timer::getDelayString() const
