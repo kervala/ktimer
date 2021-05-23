@@ -48,6 +48,7 @@ public slots:
 	void onStopClicked();
 
 	void onNameChanged(const QString &name);
+	void onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected);
 
 	// file menu
 	void onNew();
@@ -71,6 +72,7 @@ public slots:
 	void onProgress(qint64 readBytes, qint64 totalBytes);
 
 	void onDelayChanged(int delay);
+	void onTimerFinished(int row);
 
 	void onChangeSystrayIcon();
 
@@ -83,7 +85,12 @@ protected:
 
 	void displayTimer(int i);
 	void updateButtons();
+
 	void updateTimerFromCurrent();
+	void updateCurrentFromTimer();
+
+	int toTimestamp();
+	bool fromTimeStamp(int time);
 
 	QWinTaskbarButton *m_button;
 

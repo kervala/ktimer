@@ -24,15 +24,6 @@
 
 #include <QAbstractTableModel>
 
-enum TimerColumn
-{
-	TimerColumnName,
-	TimerColumnDelayHours,
-	TimerColumnDelayMinutes,
-	TimerColumnDelaySeconds,
-	TimerColumnLast
-};
-
 class TimerModel : public QAbstractTableModel
 {
 	Q_OBJECT
@@ -60,6 +51,10 @@ public:
 	Timer getTimer(int row) const;
 	void setTimer(int row, const Timer& timer);
 
+	bool startTimer(int row);
+	bool stopTimer(int row);
+	bool isTimerStarted(int row);
+
 	void reset();
 	void resetCount();
 
@@ -69,6 +64,12 @@ public:
 	QString getFilename() const;
 
 	TimerModel* clone(QObject* parent = nullptr) const;
+
+signals:
+	void timerFinished(int row);
+
+public slots:
+	void onTimeout();
 
 private:
 	QVector<Timer> m_timers;
