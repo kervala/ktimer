@@ -293,9 +293,6 @@ void MainWindow::onDelayChanged(int delay)
 
 void MainWindow::onTimerFinished(int row)
 {
-	// updateButtons();
-	// stopTimer(row);
-
 	Timer& timer = m_model->getTimer(m_selectedTimer);
 
 	SystrayIcon::getInstance()->displayMessage(tr("SimpleTimer notification"), tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name).arg(timer.getRestString()), SystrayIcon::ActionNone);
