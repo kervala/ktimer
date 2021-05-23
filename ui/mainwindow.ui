@@ -166,10 +166,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
-    <addaction name="actionImport"/>
-    <addaction name="actionExport"/>
     <addaction name="separator"/>
-    <addaction name="actionTestDialog"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -186,14 +183,6 @@
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
   </widget>
-  <action name="actionSettings">
-   <property name="text">
-    <string>&amp;Settings</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::PreferencesRole</enum>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="text">
     <string>E&amp;xit</string>
@@ -223,11 +212,6 @@
     <string>Check updates...</string>
    </property>
   </action>
-  <action name="actionTestDialog">
-   <property name="text">
-    <string>&amp;Test dialog</string>
-   </property>
-  </action>
   <action name="actionOpen">
    <property name="text">
     <string>&amp;Open...</string>
@@ -246,16 +230,6 @@
   <action name="actionNew">
    <property name="text">
     <string>&amp;New</string>
-   </property>
-  </action>
-  <action name="actionImport">
-   <property name="text">
-    <string>&amp;Import...</string>
-   </property>
-  </action>
-  <action name="actionExport">
-   <property name="text">
-    <string>Export...</string>
    </property>
   </action>
  </widget>
