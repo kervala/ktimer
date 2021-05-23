@@ -44,6 +44,9 @@ public:
 	void set(const Timer& other, bool updateRest);
 
 	QString getDelayString() const;
+	QString getRestString() const;
+
+	void updateRestDelay();
 };
 
 QDataStream& operator << (QDataStream& stream, const Timer& timer);

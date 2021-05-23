@@ -79,6 +79,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 	connect(m_ui->actionAboutQt, &QAction::triggered, this, &MainWindow::onAboutQt);
 
 	// Buttons
+	connect(m_ui->colorButton, &QPushButton::clicked, this, &MainWindow::onColorClicked);
 	connect(m_ui->addButton, &QPushButton::clicked, this, &MainWindow::onAddClicked);
 	connect(m_ui->removeButton, &QPushButton::clicked, this, &MainWindow::onRemoveClicked);
 	connect(m_ui->startButton, &QPushButton::clicked, this, &MainWindow::onStartClicked);
@@ -103,7 +104,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 
 	m_updater->checkUpdates(true);
 
-	updateButtons();
+	// create a default timer
+	onNew();
 }
 
 MainWindow::~MainWindow()
@@ -150,11 +152,14 @@ void MainWindow::onChangeSystrayIcon()
 
 void MainWindow::onNew()
 {
+	m_model->reset();
+
+	onAddClicked();
 }
 
 void MainWindow::onOpen()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open script"), ConfigFile::getInstance()->getLocalDataDirectory(), "AutoClicker Files (*.acf)");
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open timers"), ConfigFile::getInstance()->getLocalDataDirectory(), tr("SimpleTimer Files (*.stf)"));
 
 	if (filename.isEmpty()) return;
 
@@ -162,7 +167,7 @@ void MainWindow::onOpen()
 	{
 		// QString filename = QFileInfo(m_model->getFilename()).baseName();
 
-		// updateStartButton();
+		m_ui->timersListView->selectionModel()->setCurrentIndex(m_model->index(m_model->rowCount() - 1, 0), QItemSelectionModel::ClearAndSelect);
 	}
 }
 
@@ -173,16 +178,33 @@ void MainWindow::onSave()
 
 void MainWindow::onSaveAs()
 {
-	QString filename = QFileDialog::getSaveFileName(this, tr("Save actions"), /* ConfigFile::getInstance()->getLocalDataDirectory() */ m_model->getFilename(), "AutoClicker Files (*.acf)");
+	QString filename = QFileDialog::getSaveFileName(this, tr("Save timers"), m_model->getFilename().isEmpty() ? ConfigFile::getInstance()->getLocalDataDirectory():m_model->getFilename(), tr("SimpleTimer Files (*.stf)"));
 
 	if (filename.isEmpty()) return;
 
 	m_model->save(filename);
 }
 
+void MainWindow::onColorClicked()
+{
+	if (m_selectedTimer < 0) return;
+
+	Timer& timer = m_model->getTimer(m_selectedTimer);
+
+	QColor color = QColorDialog::getColor(timer.color, this, tr("LCD color"));
+
+	if (!color.isValid()) return;
+
+	timer.color = color;
+
+	m_model->updateTimer(m_selectedTimer);
+
+	updateButtons();
+}
+
 void MainWindow::onAddClicked()
 {
-	m_model->addTimer(m_currentTimer);
+	m_model->newTimer();
 
 	m_ui->timersListView->selectionModel()->setCurrentIndex(m_model->index(m_model->rowCount() - 1, 0), QItemSelectionModel::ClearAndSelect);
 }
@@ -192,6 +214,8 @@ void MainWindow::onRemoveClicked()
 	if (m_selectedTimer < 0) return;
 
 	m_model->removeTimer(m_selectedTimer);
+
+	updateButtons();
 }
 
 void MainWindow::onStartClicked()
@@ -210,30 +234,6 @@ void MainWindow::onStopClicked()
 	m_model->stopTimer(m_selectedTimer);
 
 	updateButtons();
-}
-
-void MainWindow::updateTimerFromCurrent()
-{
-	if (m_selectedTimer > -1)
-	{
-		m_model->setTimer(m_selectedTimer, m_currentTimer);
-	}
-}
-
-void MainWindow::updateCurrentFromTimer()
-{
-	if (m_selectedTimer > -1)
-	{
-		displayTimer(m_selectedTimer);
-	}
-	else
-	{
-		m_ui->nameEdit->setText(tr("No name"));
-
-		m_ui->hoursSpinBox->setValue(0);
-		m_ui->minutesSpinBox->setValue(0);
-		m_ui->secondsSpinBox->setValue(0);
-	}
 }
 
 int MainWindow::toTimestamp()
@@ -256,37 +256,49 @@ bool MainWindow::fromTimeStamp(int time)
 
 void MainWindow::onNameChanged(const QString& name)
 {
-	m_currentTimer.name = name;
+	if (m_selectedTimer < 0) return;
+
+	Timer& timer = m_model->getTimer(m_selectedTimer);
+
+	timer.name = name;
+
+	m_model->updateTimer(m_selectedTimer);
 
 	updateButtons();
-	updateTimerFromCurrent();
 }
 
 void MainWindow::onDelayChanged(int delay)
 {
+	if (m_selectedTimer < 0) return;
+
+	Timer& timer = m_model->getTimer(m_selectedTimer);
+
 	if (sender() == m_ui->hoursSpinBox)
 	{
-		m_currentTimer.delayHours = delay;
+		timer.delayHours = delay;
 	}
 	else if (sender() == m_ui->minutesSpinBox)
 	{
-		m_currentTimer.delayMinutes = delay;
+		timer.delayMinutes = delay;
 	}
 	else if (sender() == m_ui->secondsSpinBox)
 	{
-		m_currentTimer.delaySeconds = delay;
+		timer.delaySeconds = delay;
 	}
 
-	m_currentTimer.restDelay = ::toTimestamp(m_currentTimer.delayHours, m_currentTimer.delayMinutes, m_currentTimer.delaySeconds);
+	timer.updateRestDelay();
 
-	updateTimerFromCurrent();
+	m_model->updateTimer(m_selectedTimer);
 }
 
 void MainWindow::onTimerFinished(int row)
 {
-	updateButtons();
+	// updateButtons();
+	// stopTimer(row);
 
-	SystrayIcon::getInstance()->displayMessage("yeah", SystrayIcon::ActionNone);
+	Timer& timer = m_model->getTimer(m_selectedTimer);
+
+	SystrayIcon::getInstance()->displayMessage(tr("SimpleClicker notification"), tr("Timer %1 just finished after %2. You can restart it if you need.").arg(timer.name).arg(timer.getRestString()), SystrayIcon::ActionNone);
 }
 
 void MainWindow::onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected)
@@ -298,9 +310,10 @@ void MainWindow::onTimerSelected(const QItemSelection& selected, const QItemSele
 	else
 	{
 		m_selectedTimer = selected.indexes().front().row();
+
+		displayTimer(m_selectedTimer);
 	}
 
-	updateCurrentFromTimer();
 	updateButtons();
 }
 
@@ -308,25 +321,37 @@ void MainWindow::displayTimer(int i)
 {
 	if (i >= m_model->rowCount()) return;
 
-	m_currentTimer = m_model->getTimer(i);
+	Timer& timer = m_model->getTimer(i);
 
-	m_ui->nameEdit->setText(m_currentTimer.name);
+	m_ui->nameEdit->setText(timer.name);
 
-	m_ui->hoursSpinBox->setValue(m_currentTimer.delayHours);
-	m_ui->minutesSpinBox->setValue(m_currentTimer.delayMinutes);
-	m_ui->secondsSpinBox->setValue(m_currentTimer.delaySeconds);
+	m_ui->hoursSpinBox->setValue(timer.delayHours);
+	m_ui->minutesSpinBox->setValue(timer.delayMinutes);
+	m_ui->secondsSpinBox->setValue(timer.delaySeconds);
 }
 
 void MainWindow::updateButtons()
 {
 	bool timerStarted = m_selectedTimer > -1 && m_model->isTimerStarted(m_selectedTimer);
 
+	Timer& timer = m_model->getTimer(m_selectedTimer);
+
+	QPixmap pixmap(16, 16);
+	pixmap.fill(Qt::transparent);
+
+	QPainter painter(&pixmap);
+	painter.setBrush(timer.color);
+	painter.drawRect(QRect(0, 2, 10, 12));
+
+	QIcon icon(pixmap);
+	m_ui->colorButton->setIcon(icon);
+
 	m_ui->hoursSpinBox->setEnabled(!timerStarted);
 	m_ui->minutesSpinBox->setEnabled(!timerStarted);
 	m_ui->secondsSpinBox->setEnabled(!timerStarted);
 
-	m_ui->addButton->setEnabled(!m_ui->nameEdit->text().isEmpty());
-	m_ui->removeButton->setEnabled(m_selectedTimer > -1);
+	m_ui->addButton->setEnabled(true);
+	m_ui->removeButton->setEnabled(m_selectedTimer > -1 && m_model->rowCount() > 1);
 
 	m_ui->startButton->setEnabled(!timerStarted);
 	m_ui->stopButton->setEnabled(timerStarted);

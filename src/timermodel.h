@@ -35,35 +35,25 @@ public:
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
-	Qt::ItemFlags flags(const QModelIndex& index) const override;
 	bool insertRows(int position, int rows, const QModelIndex& index = QModelIndex()) override;
 	bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex()) override;
 
-	Qt::DropActions supportedDropActions() const override;
-	QStringList mimeTypes() const override;
-	QMimeData* mimeData(const QModelIndexList& indexes) const override;
-	bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) override;
-
-	bool addTimer(const Timer& timer);
+	bool newTimer();
 	bool removeTimer(int row);
+	void updateTimer(int row);
 
-	Timer getTimer(int row) const;
-	void setTimer(int row, const Timer& timer);
+	Timer& getTimer(int row);
 
 	bool startTimer(int row);
 	bool stopTimer(int row);
 	bool isTimerStarted(int row);
 
 	void reset();
-	void resetCount();
 
 	bool load(const QString& filename);
 	bool save(const QString& filename);
 
 	QString getFilename() const;
-
-	TimerModel* clone(QObject* parent = nullptr) const;
 
 signals:
 	void timerFinished(int row);

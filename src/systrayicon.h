@@ -52,7 +52,7 @@ public:
 	SystrayStatus getStatus() const;
 	void setStatus(SystrayStatus status);
 
-	void displayMessage(const QString &message, SystrayAction action);
+	void displayMessage(const QString& title, const QString &message, SystrayAction action);
 	void update();
 
 signals:
