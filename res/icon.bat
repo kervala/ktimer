@@ -4,14 +4,14 @@ set DIR=%CD%
 
 echo Current directory is %DIR%
 
-cd "C:\Program Files (x86)\Inkscape"
+cd "C:\Program Files\Inkscape"
 
 c:
 
 call:convert_desktop icon icon %DIR%
 call:convert %DIR%\header %DIR%\header 57 1
 
-convert %DIR%\header.png -units PixelsPerInch -density 72 -alpha off BMP3:%DIR%\header.bmp
+magick %DIR%\header.png -units PixelsPerInch -density 72 -alpha off BMP3:%DIR%\header.bmp
 
 del %DIR%\header.png
 
@@ -46,8 +46,8 @@ call:convert %SRC_ICON% %DST_ICON%128x128 128 0
 call:convert %SRC_ICON% %DST_ICON%256x256 256 0
 call:convert %SRC_ICON% %DST_ICON%512x512 512 0
 
-convert %DST_ICON%256x256.png %DST_ICON%48x48.png %DST_ICON%32x32.png %DST_ICON%16x16.png %DST_ICON%.ico
+magick %DST_ICON%256x256.png %DST_ICON%48x48.png %DST_ICON%32x32.png %DST_ICON%16x16.png %DST_ICON%.ico
 png2icns %DST_ICON%.icns %DST_ICON%16x16.png %DST_ICON%32x32.png %DST_ICON%128x128.png %DST_ICON%256x256.png %DST_ICON%512x512.png
-convert %DST_ICON%32x32.png %DST_ICON%.xpm
+magick %DST_ICON%32x32.png %DST_ICON%.xpm
 
 goto:eof
