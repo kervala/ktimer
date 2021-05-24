@@ -55,7 +55,7 @@ void TimerDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
 QSize TimerDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-	return QSize(-1, 32);
+	return QSize(-1, 40);
 }
 
 void TimerDelegate::drawString(const QString& s, const QStyleOptionViewItem& options, QPainter& p) const
