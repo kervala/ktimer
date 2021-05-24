@@ -35,7 +35,14 @@
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="simpleGroupBox">
+     <widget class="QCheckBox" name="hideDetailsCheckBox">
+      <property name="text">
+       <string>Hide details</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="detailsGroupBox">
       <property name="title">
        <string>Timer</string>
       </property>
@@ -234,5 +241,22 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>hideDetailsCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>detailsGroupBox</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>195</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>85</x>
+     <y>341</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
