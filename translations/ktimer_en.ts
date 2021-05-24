@@ -4,169 +4,164 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../ui/mainwindow.ui" line="182"/>
+        <location filename="../ui/mainwindow.ui" line="179"/>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="128"/>
+        <location filename="../ui/mainwindow.ui" line="125"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="135"/>
+        <location filename="../ui/mainwindow.ui" line="132"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="142"/>
+        <location filename="../ui/mainwindow.ui" line="139"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="111"/>
+        <location filename="../ui/mainwindow.ui" line="108"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="18"/>
-        <source>Timers</source>
-        <translation>Timers</translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="40"/>
+        <location filename="../ui/mainwindow.ui" line="37"/>
         <source>Hide details</source>
-        <translation type="unfinished"></translation>
+        <translation>Hide details</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="47"/>
+        <location filename="../ui/mainwindow.ui" line="44"/>
         <source>Timer</source>
         <translation>Timer</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="53"/>
+        <location filename="../ui/mainwindow.ui" line="50"/>
         <source>Delay</source>
         <translation>Delay</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="75"/>
-        <location filename="../ui/mainwindow.ui" line="92"/>
+        <location filename="../ui/mainwindow.ui" line="72"/>
+        <location filename="../ui/mainwindow.ui" line="89"/>
         <source>:</source>
         <translation>:</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="121"/>
+        <location filename="../ui/mainwindow.ui" line="118"/>
         <source>Color</source>
         <translation>Color</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="169"/>
+        <location filename="../ui/mainwindow.ui" line="166"/>
         <source>&amp;File</source>
         <translation>&amp;File</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="203"/>
+        <location filename="../ui/mainwindow.ui" line="200"/>
         <source>&amp;About...</source>
         <translation>&amp;About...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="211"/>
+        <location filename="../ui/mainwindow.ui" line="208"/>
         <source>About Qt</source>
         <translation>About Qt</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="219"/>
+        <location filename="../ui/mainwindow.ui" line="216"/>
         <source>Check updates...</source>
         <translation>Check updates...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="224"/>
+        <location filename="../ui/mainwindow.ui" line="221"/>
         <source>&amp;Open...</source>
         <translation>&amp;Open...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="229"/>
+        <location filename="../ui/mainwindow.ui" line="226"/>
         <source>&amp;Save</source>
         <translation>&amp;Save</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="234"/>
+        <location filename="../ui/mainwindow.ui" line="231"/>
         <source>Save &amp;as...</source>
         <translation>Save &amp;as...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="239"/>
+        <location filename="../ui/mainwindow.ui" line="236"/>
         <source>&amp;New</source>
         <translation>&amp;New</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="195"/>
+        <location filename="../ui/mainwindow.ui" line="192"/>
         <source>E&amp;xit</source>
         <translation>E&amp;xit</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="365"/>
+        <location filename="../src/mainwindow.cpp" line="382"/>
         <source>About %1</source>
         <translation>About %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="369"/>
+        <location filename="../src/mainwindow.cpp" line="386"/>
         <source>Author: %1</source>
         <translation>Author: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="370"/>
+        <location filename="../src/mainwindow.cpp" line="387"/>
         <source>Support: %1</source>
         <translation>Support: %1</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="149"/>
+        <location filename="../ui/mainwindow.ui" line="146"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="162"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Open timers</source>
         <translation>Open timers</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="162"/>
-        <location filename="../src/mainwindow.cpp" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="182"/>
         <source>kTimer Files (*.ktf)</source>
-        <translation type="unfinished"></translation>
+        <translation>kTimer Files (*.ktf)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="182"/>
         <source>Save timers</source>
         <translation>Save timers</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="194"/>
+        <location filename="../src/mainwindow.cpp" line="195"/>
         <source>LCD color</source>
         <translation>LCD color</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="298"/>
+        <location filename="../src/mainwindow.cpp" line="299"/>
         <source>End of timer %1 after %2. You can restart it if you need.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="298"/>
+        <location filename="../src/mainwindow.cpp" line="299"/>
         <source>kTimer notification</source>
-        <translation type="unfinished"></translation>
+        <translation>kTimer notification</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="367"/>
+        <location filename="../src/mainwindow.cpp" line="384"/>
         <source>Simple timers notifier</source>
         <translation>Simple timers notifier</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="430"/>
+        <location filename="../src/mainwindow.cpp" line="447"/>
         <source>New version</source>
         <translation>New version</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="431"/>
+        <location filename="../src/mainwindow.cpp" line="448"/>
         <source>Version %1 is available since %2.
 
 Do you want to download it now?</source>
@@ -175,12 +170,12 @@ Do you want to download it now?</source>
 Do you want to download it now?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="452"/>
+        <location filename="../src/mainwindow.cpp" line="469"/>
         <source>No update found</source>
         <translation>No update found</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="453"/>
+        <location filename="../src/mainwindow.cpp" line="470"/>
         <source>You already have the last %1 version (%2).</source>
         <translation>You already have the last %1 version (%2).</translation>
     </message>
