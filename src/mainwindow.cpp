@@ -159,7 +159,7 @@ void MainWindow::onNew()
 
 void MainWindow::onOpen()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open timers"), ConfigFile::getInstance()->getLocalDataDirectory(), tr("SimpleTimer Files (*.stf)"));
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open timers"), ConfigFile::getInstance()->getLocalDataDirectory(), tr("kTimer Files (*.ktf)"));
 
 	if (filename.isEmpty()) return;
 
@@ -178,7 +178,7 @@ void MainWindow::onSave()
 
 void MainWindow::onSaveAs()
 {
-	QString filename = QFileDialog::getSaveFileName(this, tr("Save timers"), m_model->getFilename().isEmpty() ? ConfigFile::getInstance()->getLocalDataDirectory():m_model->getFilename(), tr("SimpleTimer Files (*.stf)"));
+	QString filename = QFileDialog::getSaveFileName(this, tr("Save timers"), m_model->getFilename().isEmpty() ? ConfigFile::getInstance()->getLocalDataDirectory():m_model->getFilename(), tr("kTimer Files (*.ktf)"));
 
 	if (filename.isEmpty()) return;
 
@@ -295,7 +295,7 @@ void MainWindow::onTimerFinished(int row)
 {
 	const Timer& timer = m_model->getTimer(row);
 
-	SystrayIcon::getInstance()->displayMessage(tr("SimpleTimer notification"), tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name).arg(timer.getDelayString()), SystrayIcon::ActionNone);
+	SystrayIcon::getInstance()->displayMessage(tr("kTimer notification"), tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name).arg(timer.getDelayString()), SystrayIcon::ActionNone);
 }
 
 void MainWindow::onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected)
