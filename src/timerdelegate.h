@@ -35,8 +35,6 @@ private:
 	void drawSegment(const QPoint& pos, char segmentNo, const QStyleOptionViewItem& options, QPainter& p, int segLen, bool erase) const;
 
 	int ndigits;
-	bool smallPoint;
-	bool shadow;
 };
 
 #endif
