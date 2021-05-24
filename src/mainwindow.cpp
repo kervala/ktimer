@@ -62,6 +62,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 
 	// Selection model
 	connect(m_ui->timersListView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::onTimerSelected);
+	connect(m_ui->timersListView, &QListView::doubleClicked, this, &MainWindow::onTimerDoubleClicked);
 
 	// check for a new version
 	m_updater = new Updater(this);
@@ -312,6 +313,22 @@ void MainWindow::onTimerSelected(const QItemSelection& selected, const QItemSele
 	}
 
 	updateButtons();
+}
+
+void MainWindow::onTimerDoubleClicked(const QModelIndex& item)
+{
+	if (m_model->isTimerRunning(item.row()))
+	{
+		m_model->stopTimer(item.row());
+
+		updateButtons();
+	}
+	else
+	{
+		m_model->startTimer(item.row());
+
+		updateButtons();
+	}
 }
 
 void MainWindow::displayTimer(int i)
