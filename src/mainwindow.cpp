@@ -383,7 +383,7 @@ void MainWindow::onAbout()
 	QMessageBox::about(this,
 		tr("About %1").arg(QApplication::applicationName()),
 		QString("%1 %2<br>").arg(QApplication::applicationName()).arg(QApplication::applicationVersion())+
-		tr("Simple timers notifier")+
+		tr("Simple timers manager")+
 		QString("<br><br>")+
 		tr("Author: %1").arg("<a href=\"http://kervala.deviantart.com\">Kervala</a><br>")+
 		tr("Support: %1").arg("<a href=\"http://dev.kervala.net/projects/ktimer\">http://dev.kervala.net/projects/ktimer</a>"));
