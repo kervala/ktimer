@@ -70,7 +70,7 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::ForegroundRole)
 	{
-		if (m_timers[index.row()].restDelay < 0 && (m_timers[index.row()].restDelay % 2 == 0))
+		if (timer.timerRunning && timer.restDelay < 0 && (timer.restDelay % 2 == 0))
 		{
 			return QColor(Qt::color1);
 		}
