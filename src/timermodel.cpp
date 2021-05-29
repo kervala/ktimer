@@ -58,14 +58,16 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid()) return QVariant();
 
+	const Timer& timer = m_timers[index.row()];
+
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		return m_timers[index.row()].getRestString();
+		return timer.getRestString();
 	}
 
 	if (role == Qt::ToolTipRole)
 	{
-		return m_timers[index.row()].name;
+		return timer.name;
 	}
 
 	if (role == Qt::ForegroundRole)
@@ -75,7 +77,7 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 			return QColor(Qt::color1);
 		}
 
-		return m_timers[index.row()].color;
+		return timer.color;
 	}
 
 	return QVariant();
