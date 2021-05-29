@@ -386,7 +386,7 @@ void MainWindow::onAbout()
 		tr("Simple timers notifier")+
 		QString("<br><br>")+
 		tr("Author: %1").arg("<a href=\"http://kervala.deviantart.com\">Kervala</a><br>")+
-		tr("Support: %1").arg("<a href=\"http://dev.kervala.net/projects/simpletimer\">http://dev.kervala.net/projects/simpletimer</a>"));
+		tr("Support: %1").arg("<a href=\"http://dev.kervala.net/projects/ktimer\">http://dev.kervala.net/projects/ktimer</a>"));
 }
 
 void MainWindow::onAboutQt()
