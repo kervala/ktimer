@@ -172,54 +172,35 @@ QString GetUserAgent()
 	if (s_userAgent.isEmpty())
 	{
 		QString system;
-#ifdef Q_OS_WIN32
-		system = "Windows ";
 
+		auto current = QOperatingSystemVersion::current();
 
-		// TODO: QOperatingSystemVersion::current()
-		switch (QSysInfo::WindowsVersion)
+		if (current.type() == QOperatingSystemVersion::Windows)
 		{
-			case QSysInfo::WV_32s: system += "3.1 with Win32s"; break;
-			case QSysInfo::WV_95: system += "95"; break;
-			case QSysInfo::WV_98: system += "98"; break;
-			case QSysInfo::WV_Me: system += "Me"; break;
-			case QSysInfo::WV_DOS_based: system += "DOS"; break;
+			system = QString("%1 NT %2.%3; Win%4; ").arg(current.name()).arg(current.majorVersion()).arg(current.minorVersion()).arg(IsOS64bits() ? 64 : 32);
 
-			case QSysInfo::WV_4_0: system += "NT 4.0"; break; // Windows NT 4
-			case QSysInfo::WV_5_0: system += "NT 5.0"; break; // Windows 2000
-			case QSysInfo::WV_5_1: system += "NT 5.1"; break; // Windows XP
-			case QSysInfo::WV_5_2: system += "NT 5.2"; break; // Windows XP 64bits
-			case QSysInfo::WV_6_0: system += "NT 6.0"; break; // Windows Vista
-			case QSysInfo::WV_6_1: system += "NT 6.1"; break; // Windows 7
-			case QSysInfo::WV_6_2: system += "NT 6.2"; break; // Windows 8
-			case QSysInfo::WV_6_3: system += "NT 6.3"; break; // Windows 8.1
-//			case QSysInfo::WV_10_0: system += "NT 10.0"; break; // Windows 10
-			case QSysInfo::WV_NT_based: system += "NT"; break;
-
-			case QSysInfo::WV_CE: system += "CE"; break;
-			case QSysInfo::WV_CENET: system += "CE Net"; break;
-			case QSysInfo::WV_CE_5: system += "CE 5"; break;
-			case QSysInfo::WV_CE_6: system += "CE 6"; break;
-			case QSysInfo::WV_CE_based: system += "CE"; break;
+			// application target processor
+#ifdef _WIN64
+			system += "x64; ";
+#else
+			system += "i386;";
+#endif
+		}
+		else if (current.type() == QOperatingSystemVersion::MacOS)
+		{
+			// TODO
+		}
+		else if (current.type() == QOperatingSystemVersion::Unknown)
+		{
+			// TODO
+		}
+		else
+		{
+			// TODO
 		}
 
-		system += "; ";
-
-		// Windows target processor
-		system += QString("Win%1").arg(IsOS64bits() ? 64:32);
-
-		system += "; ";
-
-		// application target processor
-#ifdef _WIN64
-		system += "x64; ";
-#else
-		system += "i386;";
-#endif
-
 		system += QLocale::system().name().replace('_', '-');
-#else
-#endif
+
 		s_userAgent = QString("%1/%2 (%3)").arg(QApplication::applicationName()).arg(QApplication::applicationVersion()).arg(system);
 	}
 
