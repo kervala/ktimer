@@ -100,17 +100,17 @@
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="382"/>
+        <location filename="../src/mainwindow.cpp" line="384"/>
         <source>About %1</source>
         <translation>A propos de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="386"/>
+        <location filename="../src/mainwindow.cpp" line="388"/>
         <source>Author: %1</source>
         <translation>Auteur : %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="387"/>
+        <location filename="../src/mainwindow.cpp" line="389"/>
         <source>Support: %1</source>
         <translation>Support technique : %1</translation>
     </message>
@@ -141,9 +141,14 @@
         <translation>Couleur LCD</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="299"/>
+        <location filename="../src/mainwindow.cpp" line="300"/>
         <source>End of timer %1 after %2. You can restart it if you need.</source>
         <translation>Fin du chronmètre %1 après %2. Vous pouvez le relancer si besoin.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="300"/>
+        <source>Unknown #%1</source>
+        <translation>Inconnu #%1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="299"/>
@@ -151,17 +156,17 @@
         <translation>Notification kTimer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="384"/>
-        <source>Simple timers notifier</source>
-        <translation>Notificateur de chronomètres simples</translation>
+        <location filename="../src/mainwindow.cpp" line="386"/>
+        <source>Simple timers manager</source>
+        <translation>Gestionnaire simple de chronomètres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="447"/>
+        <location filename="../src/mainwindow.cpp" line="449"/>
         <source>New version</source>
         <translation>Mise-à-jour disponible</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="448"/>
+        <location filename="../src/mainwindow.cpp" line="450"/>
         <source>Version %1 is available since %2.
 
 Do you want to download it now?</source>
@@ -170,12 +175,12 @@ Do you want to download it now?</source>
 Souhaitez-vous la télécharger maintenant ?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="469"/>
+        <location filename="../src/mainwindow.cpp" line="471"/>
         <source>No update found</source>
         <translation>Aucune mise-à-jour trouvée</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="470"/>
+        <location filename="../src/mainwindow.cpp" line="472"/>
         <source>You already have the last %1 version (%2).</source>
         <translation>Vous avez déjà la dernière version de %1 (%2).</translation>
     </message>
@@ -210,7 +215,7 @@ Souhaitez-vous la télécharger maintenant ?</translation>
 <context>
     <name>TimerModel</name>
     <message>
-        <location filename="../src/timermodel.cpp" line="95"/>
+        <location filename="../src/timermodel.cpp" line="97"/>
         <source>Timer #%1</source>
         <translation>Chronomètre #%1</translation>
     </message>
