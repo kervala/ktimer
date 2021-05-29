@@ -296,7 +296,9 @@ void MainWindow::onTimerFinished(int row)
 {
 	const Timer& timer = m_model->getTimer(row);
 
-	SystrayIcon::getInstance()->displayMessage(tr("kTimer notification"), tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name).arg(timer.getDelayString()), SystrayIcon::ActionNone);
+	SystrayIcon::getInstance()->displayMessage(tr("kTimer notification"),
+		tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name.isEmpty() ? tr("Unknown #%1").arg(row): timer.name).arg(timer.getDelayString()),
+		SystrayIcon::ActionNone);
 }
 
 void MainWindow::onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected)
