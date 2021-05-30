@@ -88,5 +88,8 @@ QDataStream& operator >> (QDataStream& stream, Timer& timer)
 {
 	stream >> timer.name >> timer.delayHours >> timer.delayMinutes >> timer.delaySeconds >> timer.color;
 
+	// update rest delay
+	timer.updateRestDelay();
+
 	return stream;
 }
