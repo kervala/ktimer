@@ -166,8 +166,6 @@ void MainWindow::onOpen()
 
 	if (m_model->load(filename))
 	{
-		// QString filename = QFileInfo(m_model->getFilename()).baseName();
-
 		m_ui->timersListView->selectionModel()->setCurrentIndex(m_model->index(m_model->rowCount() - 1, 0), QItemSelectionModel::ClearAndSelect);
 	}
 }
@@ -337,7 +335,7 @@ void MainWindow::displayTimer(int i)
 {
 	if (i >= m_model->rowCount()) return;
 
-	Timer& timer = m_model->getTimer(i);
+	const Timer& timer = m_model->getTimer(i);
 
 	m_ui->nameEdit->setText(timer.name);
 
@@ -350,7 +348,7 @@ void MainWindow::updateButtons()
 {
 	bool timerRunning = m_selectedTimer > -1 && m_model->isTimerRunning(m_selectedTimer);
 
-	Timer& timer = m_model->getTimer(m_selectedTimer);
+	const Timer& timer = m_model->getTimer(m_selectedTimer);
 
 	QPixmap pixmap(16, 16);
 	pixmap.fill(Qt::transparent);
