@@ -146,6 +146,12 @@ bool TimerModel::startTimer(int row)
 
 			int delay = toTimestamp(timer.defaultDelayHours, timer.defaultDelayMinutes, timer.defaultDelaySeconds) - toTimestamp(current.hour(), current.minute(), current.second());
 
+			// next day
+			if (delay < 0)
+			{
+				delay += 24 * 3600; // 24 hours
+			}
+
 			fromTimeStamp(delay, &timer.currentDelayHours, &timer.currentDelayMinutes, &timer.currentDelaySeconds);
 		}
 		else
