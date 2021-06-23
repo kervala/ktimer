@@ -38,9 +38,13 @@ public:
 	QString name;
 	Type type;
 
-	int delayHours;
-	int delayMinutes;
-	int delaySeconds;
+	int currentDelayHours;
+	int currentDelayMinutes;
+	int currentDelaySeconds;
+
+	int defaultDelayHours;
+	int defaultDelayMinutes;
+	int defaultDelaySeconds;
 
 	QColor color;
 
@@ -53,7 +57,9 @@ public:
 	QString getDelayString() const;
 	QString getRestString() const;
 
+	void decreaseRestDelay();
 	void updateRestDelay();
+	void updateCurrentDelay();
 };
 
 QDataStream& operator << (QDataStream& stream, const Timer& timer);

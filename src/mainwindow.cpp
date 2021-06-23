@@ -244,20 +244,20 @@ void MainWindow::onStopClicked()
 	updateButtons();
 }
 
-int MainWindow::toTimestamp()
+int MainWindow::currentDelayToTimestamp()
 {
-	return ::toTimestamp(m_ui->hoursSpinBox->value(), m_ui->minutesSpinBox->value(), m_ui->secondsSpinBox->value());
+	return ::toTimestamp(m_ui->currentHoursSpinBox->value(), m_ui->currentMinutesSpinBox->value(), m_ui->currentSecondsSpinBox->value());
 }
 
-bool MainWindow::fromTimeStamp(int time)
+bool MainWindow::currentDelayFromTimeStamp(int time)
 {
 	int h, m, s;
 
 	if (!::fromTimeStamp(time, &h, &m, &s)) return false;
 
-	m_ui->hoursSpinBox->setValue(h);
-	m_ui->minutesSpinBox->setValue(m);
-	m_ui->secondsSpinBox->setValue(s);
+	m_ui->currentHoursSpinBox->setValue(h);
+	m_ui->currentMinutesSpinBox->setValue(m);
+	m_ui->currentSecondsSpinBox->setValue(s);
 
 	return true;
 }
@@ -281,17 +281,29 @@ void MainWindow::onDelayChanged(int delay)
 
 	Timer& timer = m_model->getTimer(m_selectedTimer);
 
-	if (sender() == m_ui->hoursSpinBox)
+	if (sender() == m_ui->currentHoursSpinBox)
 	{
-		timer.delayHours = delay;
+		timer.currentDelayHours = delay;
 	}
-	else if (sender() == m_ui->minutesSpinBox)
+	else if (sender() == m_ui->currentMinutesSpinBox)
 	{
-		timer.delayMinutes = delay;
+		timer.currentDelayMinutes = delay;
 	}
-	else if (sender() == m_ui->secondsSpinBox)
+	else if (sender() == m_ui->currentSecondsSpinBox)
 	{
-		timer.delaySeconds = delay;
+		timer.currentDelaySeconds = delay;
+	}
+	else if (sender() == m_ui->defaultHoursSpinBox)
+	{
+		timer.defaultDelayHours = delay;
+	}
+	else if (sender() == m_ui->defaultMinutesSpinBox)
+	{
+		timer.defaultDelayMinutes = delay;
+	}
+	else if (sender() == m_ui->defaultSecondsSpinBox)
+	{
+		timer.defaultDelaySeconds = delay;
 	}
 
 	timer.updateRestDelay();
@@ -384,9 +396,13 @@ void MainWindow::updateButtons()
 	QIcon icon(pixmap);
 	m_ui->colorButton->setIcon(icon);
 
-	m_ui->hoursSpinBox->setEnabled(!timerRunning);
-	m_ui->minutesSpinBox->setEnabled(!timerRunning);
-	m_ui->secondsSpinBox->setEnabled(!timerRunning);
+	m_ui->currentHoursSpinBox->setEnabled(!timerRunning);
+	m_ui->currentMinutesSpinBox->setEnabled(!timerRunning);
+	m_ui->currentSecondsSpinBox->setEnabled(!timerRunning);
+
+	m_ui->defaultHoursSpinBox->setEnabled(!timerRunning);
+	m_ui->defaultMinutesSpinBox->setEnabled(!timerRunning);
+	m_ui->defaultSecondsSpinBox->setEnabled(!timerRunning);
 
 	m_ui->addButton->setEnabled(true);
 	m_ui->removeButton->setEnabled(m_selectedTimer > -1 && m_model->rowCount() > 1);

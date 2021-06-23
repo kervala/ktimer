@@ -89,8 +89,8 @@ protected:
 	void displayTimer(int i);
 	void updateButtons();
 
-	int toTimestamp();
-	bool fromTimeStamp(int time);
+	int currentDelayToTimestamp();
+	bool currentDelayFromTimeStamp(int time);
 
 	QWinTaskbarButton *m_button;
 

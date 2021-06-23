@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>171</width>
-    <height>401</height>
+    <height>471</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="centralVerticalLayout">
     <item>
      <widget class="QListView" name="timersListView">
       <property name="frameShape">
@@ -43,18 +43,18 @@
       <property name="title">
        <string>Timer</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="detailsVerticalLayout">
        <item>
-        <widget class="QLabel" name="delayLabel">
+        <widget class="QLabel" name="currentLabel">
          <property name="text">
-          <string>Delay</string>
+          <string>Current</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout" name="currentHorizontalLayout">
          <item>
-          <widget class="QSpinBox" name="hoursSpinBox">
+          <widget class="QSpinBox" name="currentHoursSpinBox">
            <property name="minimum">
             <number>0</number>
            </property>
@@ -67,14 +67,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="hoursLabel">
+          <widget class="QLabel" name="currentHoursLabel">
            <property name="text">
             <string>:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="minutesSpinBox">
+          <widget class="QSpinBox" name="currentMinutesSpinBox">
            <property name="maximum">
             <number>59</number>
            </property>
@@ -84,14 +84,72 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="minutesLabel">
+          <widget class="QLabel" name="currentMinutesLabel">
            <property name="text">
             <string>:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="secondsSpinBox">
+          <widget class="QSpinBox" name="currentSecondsSpinBox">
+           <property name="maximum">
+            <number>59</number>
+           </property>
+           <property name="singleStep">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="defaultLabel">
+         <property name="text">
+          <string>Default</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="defaultHorizontalLayout">
+         <item>
+          <widget class="QSpinBox" name="defaultHoursSpinBox">
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>23</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="defaultHoursLabel">
+           <property name="text">
+            <string>:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="defaultMinutesSpinBox">
+           <property name="maximum">
+            <number>59</number>
+           </property>
+           <property name="singleStep">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="defaultMinutesLabel">
+           <property name="text">
+            <string>:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="defaultSecondsSpinBox">
            <property name="maximum">
             <number>59</number>
            </property>
@@ -111,6 +169,13 @@
        </item>
        <item>
         <widget class="QLineEdit" name="nameEdit"/>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="absoluteTimeCheckBox">
+         <property name="text">
+          <string>Absolute time</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="colorButton">

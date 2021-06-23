@@ -27,6 +27,15 @@ int toTimestamp(int h, int m, int s)
 
 bool fromTimeStamp(int time, int* h, int* m, int* s)
 {
+	if (time < 0)
+	{
+		if (s) *s = 0;
+		if (m) *m = 0;
+		if (h) *h = 0;
+
+		return false;
+	}
+
 	if (s) *s = time % 60;
 
 	time /= 60;
@@ -54,7 +63,7 @@ Timer::Timer(const Timer& other):name(other.name), type(other.type),
 
 QString Timer::getDelayString() const
 {
-	return QString("%1:%2:%3").arg(delayHours, 2, 10, QChar('0')).arg(delayMinutes, 2, 10, QChar('0')).arg(delaySeconds, 2, 10, QChar('0'));
+	return QString("%1:%2:%3").arg(currentDelayHours, 2, 10, QChar('0')).arg(currentDelayMinutes, 2, 10, QChar('0')).arg(currentDelaySeconds, 2, 10, QChar('0'));
 }
 
 QString Timer::getRestString() const
@@ -75,9 +84,19 @@ QString Timer::getRestString() const
 	return QString("%1:%2:%3").arg(h, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0')).arg(s, 2, 10, QChar('0'));
 }
 
+void Timer::decreaseRestDelay()
+{
+	--restDelay;
+}
+
 void Timer::updateRestDelay()
 {
-	restDelay = toTimestamp(delayHours, delayMinutes, delaySeconds);
+	restDelay = toTimestamp(currentDelayHours, currentDelayMinutes, currentDelaySeconds);
+}
+
+void Timer::updateCurrentDelay()
+{
+	fromTimeStamp(restDelay, &currentDelayHours, &currentDelayMinutes, &currentDelaySeconds);
 }
 
 QDataStream& operator << (QDataStream& stream, const Timer &timer)
