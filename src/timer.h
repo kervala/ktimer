@@ -26,10 +26,17 @@ bool fromTimeStamp(int time, int* h, int* m, int* s);
 class Timer
 {
 public:
+	enum class Type
+	{
+		Timer,
+		Alarm
+	};
+
 	Timer();
 	Timer(const Timer& other);
 
 	QString name;
+	Type type;
 
 	int delayHours;
 	int delayMinutes;

@@ -40,11 +40,14 @@ bool fromTimeStamp(int time, int* h, int* m, int* s)
 	return true;
 }
 
-Timer::Timer():delayHours(0), delayMinutes(0), delaySeconds(0), color(Qt::color0), restDelay(0), timer(nullptr), timerRunning(false)
+Timer::Timer():type(Type::Timer), currentDelayHours(0), currentDelayMinutes(0), currentDelaySeconds(0), defaultDelayHours(0), defaultDelayMinutes(0), defaultDelaySeconds(0),
+	color(Qt::color0), restDelay(0), timer(nullptr), timerRunning(false)
 {
 }
 
-Timer::Timer(const Timer& other):name(other.name), delayHours(other.delayHours), delayMinutes(other.delayMinutes), delaySeconds(other.delaySeconds),
+Timer::Timer(const Timer& other):name(other.name), type(other.type),
+	currentDelayHours(other.currentDelayHours), currentDelayMinutes(other.currentDelayMinutes), currentDelaySeconds(other.currentDelaySeconds),
+	defaultDelayHours(other.defaultDelayHours), defaultDelayMinutes(other.defaultDelayMinutes), defaultDelaySeconds(other.defaultDelaySeconds),
 	color(other.color), restDelay(other.restDelay), timer(other.timer), timerRunning(other.timerRunning)
 {
 }
@@ -79,14 +82,19 @@ void Timer::updateRestDelay()
 
 QDataStream& operator << (QDataStream& stream, const Timer &timer)
 {
-	stream << timer.name << timer.delayHours << timer.delayMinutes << timer.delaySeconds << timer.color;
+	stream << timer.name << timer.defaultDelayHours << timer.defaultDelayMinutes << timer.defaultDelaySeconds << timer.color << timer.type;
 
 	return stream;
 }
 
 QDataStream& operator >> (QDataStream& stream, Timer& timer)
 {
-	stream >> timer.name >> timer.delayHours >> timer.delayMinutes >> timer.delaySeconds >> timer.color;
+	stream >> timer.name >> timer.defaultDelayHours >> timer.defaultDelayMinutes >> timer.defaultDelaySeconds >> timer.color;
+
+	if (stream.device()->property("version") == 2)
+	{
+		stream >> timer.type;
+	}
 
 	// update rest delay
 	timer.updateRestDelay();

@@ -89,9 +89,18 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 	connect(m_ui->nameEdit, &QLineEdit::textChanged, this, &MainWindow::onNameChanged);
 
 	// Delay
-	connect(m_ui->hoursSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
-	connect(m_ui->minutesSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
-	connect(m_ui->secondsSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
+
+	// current
+	connect(m_ui->currentHoursSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
+	connect(m_ui->currentMinutesSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
+	connect(m_ui->currentSecondsSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
+
+	// default
+	connect(m_ui->defaultHoursSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
+	connect(m_ui->defaultMinutesSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
+	connect(m_ui->defaultSecondsSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::onDelayChanged);
+
+	connect(m_ui->absoluteTimeCheckBox, &QCheckBox::toggled, this, &MainWindow::onAbsoluteTimeChecked);
 
 	// Systray
 	connect(systray, &SystrayIcon::requestMinimize, this, &MainWindow::onMinimize);
@@ -290,6 +299,15 @@ void MainWindow::onDelayChanged(int delay)
 	m_model->updateTimer(m_selectedTimer);
 }
 
+void MainWindow::onAbsoluteTimeChecked(bool checked)
+{
+	if (m_selectedTimer < 0 || m_model->isTimerRunning(m_selectedTimer)) return;
+
+	Timer& timer = m_model->getTimer(m_selectedTimer);
+
+	timer.type = m_ui->absoluteTimeCheckBox->isChecked() ? Timer::Type::Alarm : Timer::Type::Timer;
+}
+
 void MainWindow::onTimerFinished(int row)
 {
 	const Timer& timer = m_model->getTimer(row);
@@ -339,9 +357,15 @@ void MainWindow::displayTimer(int i)
 
 	m_ui->nameEdit->setText(timer.name);
 
-	m_ui->hoursSpinBox->setValue(timer.delayHours);
-	m_ui->minutesSpinBox->setValue(timer.delayMinutes);
-	m_ui->secondsSpinBox->setValue(timer.delaySeconds);
+	m_ui->absoluteTimeCheckBox->setChecked(timer.type == Timer::Type::Alarm);
+
+	m_ui->currentHoursSpinBox->setValue(timer.currentDelayHours);
+	m_ui->currentMinutesSpinBox->setValue(timer.currentDelayMinutes);
+	m_ui->currentSecondsSpinBox->setValue(timer.currentDelaySeconds);
+
+	m_ui->defaultHoursSpinBox->setValue(timer.defaultDelayHours);
+	m_ui->defaultMinutesSpinBox->setValue(timer.defaultDelayMinutes);
+	m_ui->defaultSecondsSpinBox->setValue(timer.defaultDelaySeconds);
 }
 
 void MainWindow::updateButtons()

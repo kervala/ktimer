@@ -74,6 +74,7 @@ public slots:
 	void onProgress(qint64 readBytes, qint64 totalBytes);
 
 	void onDelayChanged(int delay);
+	void onAbsoluteTimeChecked(bool on);
 	void onTimerFinished(int row);
 
 	void onChangeSystrayIcon();

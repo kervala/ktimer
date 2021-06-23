@@ -33,8 +33,11 @@ SMagicHeader s_header = { "TIFK" };
 
 // version 1:
 // - initial version
+// 
+// version 2:
+// - added "type" variable
 
-quint32 s_version = 1;
+quint32 s_version = 2;
 
 TimerModel::TimerModel(QObject* parent) : QAbstractTableModel(parent)
 {
@@ -134,7 +137,26 @@ bool TimerModel::startTimer(int row)
 
 	if (timer.timer) return false;
 
-	timer.restDelay = toTimestamp(timer.delayHours, timer.delayMinutes, timer.delaySeconds);
+	if (timer.currentDelayHours == 0 && timer.currentDelayMinutes == 0 && timer.currentDelaySeconds == 0)
+	{
+		if (timer.type == Timer::Type::Alarm)
+		{
+			// compute delay
+			QTime current = QTime::currentTime();
+
+			int delay = toTimestamp(timer.defaultDelayHours, timer.defaultDelayMinutes, timer.defaultDelaySeconds) - toTimestamp(current.hour(), current.minute(), current.second());
+
+			fromTimeStamp(delay, &timer.currentDelayHours, &timer.currentDelayMinutes, &timer.currentDelaySeconds);
+		}
+		else
+		{
+			timer.currentDelayHours = timer.defaultDelayHours;
+			timer.currentDelayMinutes = timer.defaultDelayMinutes;
+			timer.currentDelaySeconds = timer.defaultDelaySeconds;
+		}
+	}
+
+	timer.restDelay = toTimestamp(timer.currentDelayHours, timer.currentDelayMinutes, timer.currentDelaySeconds);
 	timer.timerRunning = true;
 
 	timer.timer = new QTimer(this);
@@ -181,7 +203,8 @@ void TimerModel::onTimeout()
 
 	Timer& timer = m_timers[row];
 
-	--timer.restDelay;
+	timer.decreaseRestDelay();
+	timer.updateCurrentDelay();
 
 	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
 
