@@ -88,6 +88,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 
 	connect(m_ui->nameEdit, &QLineEdit::textChanged, this, &MainWindow::onNameChanged);
 
+	connect(m_ui->hideDetailsCheckBox, &QCheckBox::toggled, this, &MainWindow::onHideDetailsToggled);
+
 	// Delay
 
 	// current
@@ -273,6 +275,16 @@ void MainWindow::onNameChanged(const QString& name)
 	m_model->updateTimer(m_selectedTimer);
 
 	updateButtons();
+}
+
+void MainWindow::onHideDetailsToggled(bool hidden)
+{
+	for (int row = 0; row < m_model->rowCount(); ++row)
+	{
+		const Timer &timer = m_model->getTimer(row);
+
+		m_ui->timersListView->setRowHidden(row, !timer.timerRunning && hidden);
+	}
 }
 
 void MainWindow::onDelayChanged(int delay)

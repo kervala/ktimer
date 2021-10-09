@@ -13,6 +13,13 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="centralVerticalLayout">
     <item>
+     <widget class="QCheckBox" name="hideDetailsCheckBox">
+      <property name="text">
+       <string>Hide details</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QListView" name="timersListView">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
@@ -28,13 +35,6 @@
       </property>
       <property name="uniformItemSizes">
        <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="hideDetailsCheckBox">
-      <property name="text">
-       <string>Hide details</string>
       </property>
      </widget>
     </item>
