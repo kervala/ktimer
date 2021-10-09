@@ -16,7 +16,7 @@
     <message>
         <location filename="../ui/mainwindow.ui" line="50"/>
         <source>Current</source>
-        <translation type="unfinished"></translation>
+        <translation>Courant</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="197"/>
@@ -54,12 +54,12 @@
     <message>
         <location filename="../ui/mainwindow.ui" line="108"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Défaut</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="176"/>
         <source>Absolute time</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps absolu</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="183"/>
