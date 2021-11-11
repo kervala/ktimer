@@ -6,23 +6,40 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>171</width>
-    <height>471</height>
+    <width>174</width>
+    <height>481</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="centralVerticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QCheckBox" name="hideDetailsCheckBox">
-      <property name="text">
-       <string>Hide details</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="topCheckBoxesHorizontalLayout">
+      <item>
+       <widget class="QCheckBox" name="detailsCheckBox">
+        <property name="text">
+         <string>Details</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="activeCheckBox">
+        <property name="text">
+         <string>Active</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QListView" name="timersListView">
+     <widget class="TimersView" name="timersListView">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
       <property name="editTriggers">
        <set>QAbstractItemView::DoubleClicked</set>
@@ -222,7 +239,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>171</width>
+     <width>174</width>
      <height>21</height>
     </rect>
    </property>
@@ -302,23 +319,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TimersView</class>
+   <extends>QListView</extends>
+   <header>timersview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>hideDetailsCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>detailsGroupBox</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>85</x>
-     <y>195</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>85</x>
-     <y>341</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
