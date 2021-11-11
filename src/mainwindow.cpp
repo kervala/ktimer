@@ -88,7 +88,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 
 	connect(m_ui->nameEdit, &QLineEdit::textChanged, this, &MainWindow::onNameChanged);
 
-	connect(m_ui->hideDetailsCheckBox, &QCheckBox::toggled, this, &MainWindow::onHideDetailsToggled);
+	connect(m_ui->detailsCheckBox, &QCheckBox::toggled, this, &MainWindow::onDetailsToggled);
+	connect(m_ui->activeCheckBox, &QCheckBox::toggled, this, &MainWindow::onActiveToggled);
 
 	// Delay
 
@@ -115,6 +116,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 	connect(m_updater, &Updater::noNewVersionDetected, this, &MainWindow::onNoNewVersion);
 
 	m_updater->checkUpdates(true);
+
+	m_ui->timersListView->setSizeAdjustPolicy(QListView::AdjustToContents);
 
 	// create a default timer
 	onNew();
@@ -178,6 +181,8 @@ void MainWindow::onOpen()
 	if (m_model->load(filename))
 	{
 		m_ui->timersListView->selectionModel()->setCurrentIndex(m_model->index(m_model->rowCount() - 1, 0), QItemSelectionModel::ClearAndSelect);
+
+		updateGeometry();
 	}
 }
 
@@ -217,6 +222,8 @@ void MainWindow::onAddClicked()
 	m_model->newTimer();
 
 	m_ui->timersListView->selectionModel()->setCurrentIndex(m_model->index(m_model->rowCount() - 1, 0), QItemSelectionModel::ClearAndSelect);
+
+	updateGeometry();
 }
 
 void MainWindow::onRemoveClicked()
@@ -226,6 +233,8 @@ void MainWindow::onRemoveClicked()
 	m_model->removeTimer(m_selectedTimer);
 
 	updateButtons();
+
+	updateGeometry();
 }
 
 void MainWindow::onStartClicked()
@@ -277,14 +286,28 @@ void MainWindow::onNameChanged(const QString& name)
 	updateButtons();
 }
 
-void MainWindow::onHideDetailsToggled(bool hidden)
+void MainWindow::onDetailsToggled(bool details)
+{
+	m_ui->detailsGroupBox->setHidden(!details);
+
+	if (!details)
+	{
+		resize(QSize(width(), minimumSizeHint().height()));
+		adjustSize();
+	}
+}
+
+void MainWindow::onActiveToggled(bool active)
 {
 	for (int row = 0; row < m_model->rowCount(); ++row)
 	{
-		const Timer &timer = m_model->getTimer(row);
+		const Timer& timer = m_model->getTimer(row);
 
-		m_ui->timersListView->setRowHidden(row, !timer.timerRunning && hidden);
+		m_ui->timersListView->setRowHidden(row, !timer.timerRunning && active);
 	}
+
+	resize(minimumSizeHint());
+	adjustSize();
 }
 
 void MainWindow::onDelayChanged(int delay)
