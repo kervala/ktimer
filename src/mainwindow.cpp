@@ -37,7 +37,7 @@
 	#define new DEBUG_NEW
 #endif
 
-MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::WindowCloseButtonHint), m_selectedTimer(-1), m_model(nullptr)
+MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowCloseButtonHint), m_selectedTimer(-1), m_model(nullptr)
 {
 	m_ui = new Ui::MainWindow();
 	m_ui->setupUi(this);
@@ -90,6 +90,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::W
 
 	connect(m_ui->detailsCheckBox, &QCheckBox::toggled, this, &MainWindow::onDetailsToggled);
 	connect(m_ui->activeCheckBox, &QCheckBox::toggled, this, &MainWindow::onActiveToggled);
+	connect(m_ui->topCheckBox, &QCheckBox::toggled, this, &MainWindow::onTopToggled);
 
 	// Delay
 
@@ -292,7 +293,7 @@ void MainWindow::onDetailsToggled(bool details)
 
 	if (!details)
 	{
-		resize(QSize(width(), minimumSizeHint().height()));
+		resize(minimumSizeHint());
 		adjustSize();
 	}
 }
@@ -308,6 +309,34 @@ void MainWindow::onActiveToggled(bool active)
 
 	resize(minimumSizeHint());
 	adjustSize();
+}
+
+void MainWindow::onTopToggled(bool top)
+{
+#ifdef Q_OS_WIN
+	if (top)
+	{
+		SetWindowPos((HWND)winId(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	}
+	else
+	{
+		SetWindowPos((HWND)winId(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	}
+#else
+	Qt::WindowFlags flags = windowFlags();
+
+	if (top)
+	{
+		setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+	}
+	else
+	{
+		setWindowFlags(flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+	}
+
+	showNormal();
+#endif
+
 }
 
 void MainWindow::onDelayChanged(int delay)

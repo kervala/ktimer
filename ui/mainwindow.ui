@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>174</width>
+    <width>181</width>
     <height>481</height>
    </rect>
   </property>
@@ -28,6 +28,13 @@
        <widget class="QCheckBox" name="activeCheckBox">
         <property name="text">
          <string>Active</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="topCheckBox">
+        <property name="text">
+         <string>Top</string>
         </property>
        </widget>
       </item>
@@ -239,7 +246,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>174</width>
+     <width>181</width>
      <height>21</height>
     </rect>
    </property>

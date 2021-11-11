@@ -51,8 +51,10 @@ public slots:
 	void onNameChanged(const QString &name);
 	void onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected);
 	void onTimerDoubleClicked(const QModelIndex& item);
+
 	void onDetailsToggled(bool details);
 	void onActiveToggled(bool active);
+	void onTopToggled(bool active);
 
 	// file menu
 	void onNew();
