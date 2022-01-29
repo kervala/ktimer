@@ -138,6 +138,8 @@ void MainWindow::showEvent(QShowEvent *e)
 	m_button->setWindow(windowHandle());
 #endif
 
+	onTopToggled(m_ui->actionAlwaysOnTop->isChecked());
+
 	e->accept();
 }
 
