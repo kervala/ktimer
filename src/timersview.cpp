@@ -26,11 +26,6 @@ TimersView::TimersView(QWidget *parent = nullptr):QListView(parent)
 
 QSize TimersView::sizeHint() const
 {
-	return QSize(width(), minimumSizeHint().height());
-}
-
-QSize TimersView::minimumSizeHint() const
-{
 	if (model()->rowCount() == 0) return QSize(0, 0);
 
 	int count = 0;
@@ -43,5 +38,12 @@ QSize TimersView::minimumSizeHint() const
 		}
 	}
 
-	return QSize(0, count * sizeHintForRow(0));
+	return QSize(width(), count * sizeHintForRow(0));
+}
+
+QSize TimersView::minimumSizeHint() const
+{
+	if (model()->rowCount() == 0) return QSize(0, 0);
+
+	return QSize(0, sizeHintForRow(0));
 }
