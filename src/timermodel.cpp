@@ -272,6 +272,15 @@ bool TimerModel::load(const QString& filename)
 
 	m_filename = filename;
 
+	for (int i = 0, ilen = m_timers.size(); i < ilen; ++i)
+	{
+		// automatically start alarms
+		if (m_timers[i].type == Timer::Type::Alarm)
+		{
+			startTimer(i);
+		}
+	}
+
 	return true;
 }
 
