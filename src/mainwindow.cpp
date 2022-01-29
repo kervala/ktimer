@@ -161,7 +161,7 @@ void MainWindow::moveEvent(QMoveEvent *e)
 
 void MainWindow::onChangeSystrayIcon()
 {
-	SystrayIcon::SystrayStatus status = SystrayIcon::getInstance()->getStatus() == SystrayIcon::StatusClick ? SystrayIcon::StatusNormal : SystrayIcon::StatusClick;
+	SystrayIcon::Status status = SystrayIcon::getInstance()->getStatus() == SystrayIcon::Status::Click ? SystrayIcon::Status::Normal : SystrayIcon::Status::Click;
 
 	SystrayIcon::getInstance()->setStatus(status);
 }
@@ -390,7 +390,7 @@ void MainWindow::onTimerFinished(int row)
 
 	SystrayIcon::getInstance()->displayMessage(tr("kTimer notification"),
 		tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name.isEmpty() ? tr("Unknown #%1").arg(row): timer.name).arg(timer.getDelayString()),
-		SystrayIcon::ActionNone);
+		SystrayIcon::Action::None);
 }
 
 void MainWindow::onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected)
@@ -516,11 +516,11 @@ void MainWindow::onRestore()
 	activateWindow();
 }
 
-void MainWindow::onSystrayAction(SystrayIcon::SystrayAction action)
+void MainWindow::onSystrayAction(SystrayIcon::Action action)
 {
 	switch(action)
 	{
-		case SystrayIcon::ActionUpdate:
+		case SystrayIcon::Action::Update:
 		break;
 
 		default:

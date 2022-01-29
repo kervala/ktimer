@@ -27,21 +27,21 @@ class SystrayIcon : public QObject
 	Q_OBJECT
 
 public:
-	enum SystrayStatus
+	enum class Status
 	{
-		StatusUndefined,
-		StatusNormal,
-		StatusClick
+		Undefined,
+		Normal,
+		Click
 	};
 
-	typedef QMap<QString, SystrayStatus> SystrayStatuses;
+	typedef QMap<QString, Status> SystrayStatuses;
 	typedef SystrayStatuses::iterator SystrayStatusesIterator;
 	typedef SystrayStatuses::const_iterator SystrayStatusesConstIterator;
 
-	enum SystrayAction
+	enum class Action
 	{
-		ActionNone,
-		ActionUpdate
+		None,
+		Update
 	};
 
 	SystrayIcon(QWidget* parent);
@@ -49,17 +49,17 @@ public:
 
 	static SystrayIcon* getInstance() { return s_instance; }
 
-	SystrayStatus getStatus() const;
-	void setStatus(SystrayStatus status);
+	Status getStatus() const;
+	void setStatus(Status status);
 
-	void displayMessage(const QString& title, const QString &message, SystrayAction action);
+	void displayMessage(const QString& title, const QString &message, Action action);
 	void update();
 
 signals:
 	void requestMinimize();
 	void requestRestore();
 	void requestClose();
-	void requestAction(SystrayIcon::SystrayAction action);
+	void requestAction(Action action);
 
 public slots:
 	void onMessageClicked();
@@ -73,9 +73,9 @@ private:
 
 	static SystrayIcon* s_instance;
 
-	SystrayStatus m_status;
+	Status m_status;
 	QSystemTrayIcon *m_icon;
-	SystrayAction m_action;
+	Action m_action;
 
 	QAction *m_minimizeAction;
 	QAction *m_restoreAction;

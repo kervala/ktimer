@@ -70,7 +70,7 @@ public slots:
 	// other
 	void onMinimize();
 	void onRestore();
-	void onSystrayAction(SystrayIcon::SystrayAction action);
+	void onSystrayAction(SystrayIcon::Action action);
 
 	// signals from OAuth2
 	void onNewVersion(const QString &url, const QString &date, uint size, const QString &version);
