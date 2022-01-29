@@ -95,6 +95,7 @@ protected:
 
 	int currentDelayToTimestamp();
 	bool currentDelayFromTimeStamp(int time);
+	void updateLayout();
 
 	QWinTaskbarButton *m_button;
 

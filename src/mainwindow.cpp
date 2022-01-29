@@ -287,15 +287,20 @@ void MainWindow::onNameChanged(const QString& name)
 	updateButtons();
 }
 
+void MainWindow::updateLayout()
+{
+	QTimer::singleShot(100, [this]()
+	{
+		resize(minimumSizeHint());
+		adjustSize();
+	});
+}
+
 void MainWindow::onDetailsToggled(bool details)
 {
 	m_ui->detailsGroupBox->setHidden(!details);
 
-	if (!details)
-	{
-		resize(minimumSizeHint());
-		adjustSize();
-	}
+	updateLayout();
 }
 
 void MainWindow::onActiveToggled(bool active)
@@ -307,8 +312,7 @@ void MainWindow::onActiveToggled(bool active)
 		m_ui->timersListView->setRowHidden(row, !timer.timerRunning && active);
 	}
 
-	resize(minimumSizeHint());
-	adjustSize();
+	updateLayout();
 }
 
 void MainWindow::onTopToggled(bool top)
