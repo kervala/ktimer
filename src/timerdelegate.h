@@ -27,7 +27,7 @@ public:
 
 	void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 
-	QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
+	QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
 private:
 	void drawString(const QString& s, const QStyleOptionViewItem& options, QPainter& p) const;
