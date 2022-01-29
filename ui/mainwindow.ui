@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>181</width>
-    <height>481</height>
+    <width>209</width>
+    <height>402</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="mainLayout" stretch="0,1,0">
     <item>
      <layout class="QHBoxLayout" name="topCheckBoxesHorizontalLayout">
       <item>
@@ -28,13 +28,6 @@
        <widget class="QCheckBox" name="activeCheckBox">
         <property name="text">
          <string>Active</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="topCheckBox">
-        <property name="text">
-         <string>Top</string>
         </property>
        </widget>
       </item>
@@ -67,7 +60,7 @@
       <property name="title">
        <string>Timer</string>
       </property>
-      <layout class="QVBoxLayout" name="detailsVerticalLayout">
+      <layout class="QVBoxLayout" name="groupBoxLayout">
        <item>
         <widget class="QLabel" name="currentLabel">
          <property name="text">
@@ -76,7 +69,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="currentHorizontalLayout">
+        <layout class="QHBoxLayout" name="currentHorizontalLayout" stretch="1,0,1,0,1">
          <item>
           <widget class="QSpinBox" name="currentHoursSpinBox">
            <property name="minimum">
@@ -134,7 +127,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="defaultHorizontalLayout">
+        <layout class="QHBoxLayout" name="defaultHorizontalLayout" stretch="1,0,1,0,1">
          <item>
           <widget class="QSpinBox" name="defaultHoursSpinBox">
            <property name="minimum">
@@ -195,46 +188,58 @@
         <widget class="QLineEdit" name="nameEdit"/>
        </item>
        <item>
-        <widget class="QCheckBox" name="absoluteTimeCheckBox">
-         <property name="text">
-          <string>Absolute time</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QCheckBox" name="absoluteTimeCheckBox">
+           <property name="text">
+            <string>Absolute time</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="colorButton">
+           <property name="text">
+            <string>Color</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="colorButton">
-         <property name="text">
-          <string>Color</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="addButton">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeButton">
+           <property name="text">
+            <string>Remove</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="addButton">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="removeButton">
-         <property name="text">
-          <string>Remove</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="startButton">
-         <property name="text">
-          <string>Start</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="stopButton">
-         <property name="text">
-          <string>Stop</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="startButton">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopButton">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -246,7 +251,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>181</width>
+     <width>209</width>
      <height>21</height>
     </rect>
    </property>
@@ -273,7 +278,16 @@
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
    </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionAlwaysOnTop"/>
+    <addaction name="actionShowOnlyActiveTimers"/>
+    <addaction name="actionShowDetails"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_View"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionExit">
@@ -323,6 +337,36 @@
   <action name="actionNew">
    <property name="text">
     <string>&amp;New</string>
+   </property>
+  </action>
+  <action name="actionAlwaysOnTop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Always on top</string>
+   </property>
+  </action>
+  <action name="actionShowOnlyActiveTimers">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show only active timers</string>
+   </property>
+  </action>
+  <action name="actionShowDetails">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show details</string>
    </property>
   </action>
  </widget>

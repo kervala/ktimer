@@ -90,7 +90,10 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowCloseButtonHint), m_se
 
 	connect(m_ui->detailsCheckBox, &QCheckBox::toggled, this, &MainWindow::onDetailsToggled);
 	connect(m_ui->activeCheckBox, &QCheckBox::toggled, this, &MainWindow::onActiveToggled);
-	connect(m_ui->topCheckBox, &QCheckBox::toggled, this, &MainWindow::onTopToggled);
+
+	connect(m_ui->actionShowDetails, &QAction::toggled, this, &MainWindow::onDetailsToggled);
+	connect(m_ui->actionShowOnlyActiveTimers, &QAction::toggled, this, &MainWindow::onActiveToggled);
+	connect(m_ui->actionAlwaysOnTop, &QAction::toggled, this, &MainWindow::onTopToggled);
 
 	// Delay
 
