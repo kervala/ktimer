@@ -30,7 +30,7 @@
 
 SystrayIcon* SystrayIcon::s_instance = NULL;
 
-SystrayIcon::SystrayIcon(QWidget* parent):QObject(parent), m_status(StatusNormal), m_icon(NULL), m_action(ActionNone),
+SystrayIcon::SystrayIcon(QWidget* parent):QObject(parent), m_status(Status::Normal), m_icon(NULL), m_action(Action::None),
 	m_minimizeAction(NULL), m_restoreAction(NULL), m_quitAction(NULL)
 {
 	if (!s_instance) s_instance = this;
@@ -98,11 +98,11 @@ void SystrayIcon::updateStatus()
 
 	switch(m_status)
 	{
-		case StatusClick:
+		case Status::Click:
 		iconImage = ":/icons/icon_click.svg";
 		break;
 
-		case StatusNormal:
+		case Status::Normal:
 		default:
 		iconImage = ":/icons/icon.svg";
 		break;
@@ -117,19 +117,19 @@ void SystrayIcon::updateStatus()
 	}
 }
 
-SystrayIcon::SystrayStatus SystrayIcon::getStatus() const
+SystrayIcon::Status SystrayIcon::getStatus() const
 {
 	return m_status;
 }
 
-void SystrayIcon::setStatus(SystrayStatus status)
+void SystrayIcon::setStatus(Status status)
 {
 	m_status = status;
 
 	updateStatus();
 }
 
-void SystrayIcon::displayMessage(const QString &title, const QString &message, SystrayAction action)
+void SystrayIcon::displayMessage(const QString &title, const QString &message, Action action)
 {
 	m_action = action;
 	
@@ -150,7 +150,7 @@ void SystrayIcon::update()
 
 void SystrayIcon::onMessageClicked()
 {
-	if (m_action != ActionNone) emit requestAction(m_action);
+	if (m_action != Action::None) emit requestAction(m_action);
 }
 
 void SystrayIcon::onTrayActivated(QSystemTrayIcon::ActivationReason reason)
