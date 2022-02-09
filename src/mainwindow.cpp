@@ -84,8 +84,6 @@ m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr)
 	connect(m_ui->colorButton, &QPushButton::clicked, this, &MainWindow::onColorClicked);
 	connect(m_ui->addButton, &QPushButton::clicked, this, &MainWindow::onAddClicked);
 	connect(m_ui->removeButton, &QPushButton::clicked, this, &MainWindow::onRemoveClicked);
-	connect(m_ui->startButton, &QPushButton::clicked, this, &MainWindow::onStartClicked);
-	connect(m_ui->stopButton, &QPushButton::clicked, this, &MainWindow::onStopClicked);
 
 	connect(m_ui->nameEdit, &QLineEdit::textChanged, this, &MainWindow::onNameChanged);
 

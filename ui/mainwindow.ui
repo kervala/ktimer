@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>209</width>
-    <height>402</height>
+    <height>382</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -218,24 +218,6 @@
           <widget class="QPushButton" name="removeButton">
            <property name="text">
             <string>Remove</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QPushButton" name="startButton">
-           <property name="text">
-            <string>Start</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="stopButton">
-           <property name="text">
-            <string>Stop</string>
            </property>
           </widget>
          </item>
