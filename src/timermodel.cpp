@@ -192,6 +192,19 @@ bool TimerModel::stopTimer(int row)
 	return true;
 }
 
+bool TimerModel::resetTimer(int row)
+{
+	stopTimer(row);
+
+	Timer& timer = m_timers[row];
+
+	timer.currentDelayHours = 0;
+	timer.currentDelayMinutes = 0;
+	timer.currentDelaySeconds = 0;
+
+	return startTimer(row);
+}
+
 bool TimerModel::isTimerRunning(int row)
 {
 	if (row < 0 || row >= m_timers.size()) return false;

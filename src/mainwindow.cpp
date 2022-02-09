@@ -37,7 +37,8 @@
 	#define new DEBUG_NEW
 #endif
 
-MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowCloseButtonHint), m_selectedTimer(-1), m_model(nullptr)
+MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowCloseButtonHint), m_selectedTimer(-1), m_model(nullptr), m_menu(nullptr),
+m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr)
 {
 	m_ui = new Ui::MainWindow();
 	m_ui->setupUi(this);
@@ -122,6 +123,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowCloseButtonHint), m_se
 	m_updater->checkUpdates(true);
 
 	m_ui->timersListView->setSizeAdjustPolicy(QListView::AdjustToContents);
+
+	createMenu();
 
 	// create a default timer
 	onNew();
@@ -257,6 +260,15 @@ void MainWindow::onStopClicked()
 	if (m_selectedTimer < 0) return;
 
 	m_model->stopTimer(m_selectedTimer);
+
+	updateButtons();
+}
+
+void MainWindow::onResetClicked()
+{
+	if (m_selectedTimer < 0) return;
+
+	m_model->resetTimer(m_selectedTimer);
 
 	updateButtons();
 }
@@ -480,8 +492,37 @@ void MainWindow::updateButtons()
 	m_ui->addButton->setEnabled(true);
 	m_ui->removeButton->setEnabled(m_selectedTimer > -1 && m_model->rowCount() > 1);
 
-	m_ui->startButton->setEnabled(!timerRunning);
-	m_ui->stopButton->setEnabled(timerRunning);
+	m_resetAction->setEnabled(timerRunning);
+	m_startAction->setEnabled(!timerRunning);
+	m_stopAction->setEnabled(timerRunning);
+}
+
+void MainWindow::createMenu()
+{
+	m_resetAction = new QAction(tr("&Reset"), this);
+	m_resetAction->setStatusTip(tr("Reset timer"));
+	connect(m_resetAction, &QAction::triggered, this, &MainWindow::onResetClicked);
+
+	m_startAction = new QAction(tr("Start"), this);
+	m_startAction->setStatusTip(tr("Start timer"));
+	connect(m_startAction, &QAction::triggered, this, &MainWindow::onStartClicked);
+
+	m_stopAction = new QAction(tr("Stop"), this);
+	m_stopAction->setStatusTip(tr("Stop timer"));
+	connect(m_stopAction, &QAction::triggered, this, &MainWindow::onStopClicked);
+
+	m_menu = new QMenu(this);
+	m_menu->addAction(m_resetAction);
+	m_menu->addAction(m_startAction);
+	m_menu->addAction(m_stopAction);
+}
+
+void MainWindow::contextMenuEvent(QContextMenuEvent* event)
+{
+	if (m_menu)
+	{
+		m_menu->exec(event->globalPos());
+	}
 }
 
 void MainWindow::onCheckUpdates()

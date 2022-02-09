@@ -47,6 +47,7 @@ public slots:
 	void onRemoveClicked();
 	void onStartClicked();
 	void onStopClicked();
+	void onResetClicked();
 
 	void onNameChanged(const QString &name);
 	void onTimerSelected(const QItemSelection& selected, const QItemSelection& deselected);
@@ -84,14 +85,16 @@ public slots:
 	void onChangeSystrayIcon();
 
 protected:
-	void showEvent(QShowEvent *e);
-	void closeEvent(QCloseEvent *e);
-	void resizeEvent(QResizeEvent *e);
-	void moveEvent(QMoveEvent *e);
-	bool event(QEvent *e);
+	void showEvent(QShowEvent *e) override;
+	void closeEvent(QCloseEvent *e) override;
+	void resizeEvent(QResizeEvent *e) override;
+	void moveEvent(QMoveEvent *e) override;
+	bool event(QEvent *e) override;
+	void contextMenuEvent(QContextMenuEvent* event) override;
 
 	void displayTimer(int i);
 	void updateButtons();
+	void createMenu();
 
 	int currentDelayToTimestamp();
 	bool currentDelayFromTimeStamp(int time);
@@ -106,6 +109,11 @@ protected:
 	int m_selectedTimer;
 
 	TimerModel* m_model;
+	QMenu *m_menu;
+
+	QAction* m_resetAction;
+	QAction* m_startAction;
+	QAction* m_stopAction;
 };
 
 #endif
