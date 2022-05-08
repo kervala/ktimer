@@ -36,6 +36,9 @@ SMagicHeader s_header = { "TIFK" };
 // 
 // version 2:
 // - added "type" variable
+//
+// version 3:
+// - added "current absolute time" variable (to resume a timer)
 
 quint32 s_version = 2;
 
@@ -47,12 +50,12 @@ TimerModel::~TimerModel()
 {
 }
 
-int TimerModel::rowCount(const QModelIndex &parent) const
+int TimerModel::rowCount(const QModelIndex &/* parent */) const
 {
 	return m_timers.size();
 }
 
-int TimerModel::columnCount(const QModelIndex &parent) const
+int TimerModel::columnCount(const QModelIndex & /* parent */) const
 {
 	return 1;
 }
@@ -65,7 +68,7 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
-		return timer.getRestString();
+		return timer.getRestDelayString();
 	}
 
 	if (role == Qt::ToolTipRole)
@@ -75,7 +78,9 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::ForegroundRole)
 	{
-		if (timer.timerRunning && timer.restDelay < 0 && (timer.restDelay % 2 == 0))
+		int restDelay = timer.getRestDelay();
+
+		if (timer.timerRunning && restDelay < 0 && (restDelay % 2 == 0))
 		{
 			return QColor(Qt::color1);
 		}
@@ -137,32 +142,30 @@ bool TimerModel::startTimer(int row)
 
 	if (timer.timer) return false;
 
-	if (timer.currentDelayHours == 0 && timer.currentDelayMinutes == 0 && timer.currentDelaySeconds == 0)
+	if (timer.currentAbsoluteTime.isNull())
 	{
-		if (timer.type == Timer::Type::Alarm)
+		// set currentDelay and currentAbsoluteTime
+		if (isNull(timer.currentDelay))
 		{
-			// compute delay
-			QTime current = QTime::currentTime();
-
-			int delay = toTimestamp(timer.defaultDelayHours, timer.defaultDelayMinutes, timer.defaultDelaySeconds) - toTimestamp(current.hour(), current.minute(), current.second());
-
-			// next day
-			if (delay < 0)
+			if (isNull(timer.defaultDelay))
 			{
-				delay += 24 * 3600; // 24 hours
+				// no defined delay to use
+				return false;
 			}
 
-			fromTimeStamp(delay, &timer.currentDelayHours, &timer.currentDelayMinutes, &timer.currentDelaySeconds);
+			timer.currentDelay = timer.defaultDelay;
+		}
+
+		if (timer.type == Timer::Type::Alarm)
+		{
+			timer.currentAbsoluteTime = timer.currentDelay;
 		}
 		else
 		{
-			timer.currentDelayHours = timer.defaultDelayHours;
-			timer.currentDelayMinutes = timer.defaultDelayMinutes;
-			timer.currentDelaySeconds = timer.defaultDelaySeconds;
+			timer.currentAbsoluteTime = QTime::currentTime().addSecs(toTimestamp(timer.currentDelay));
 		}
 	}
 
-	timer.restDelay = toTimestamp(timer.currentDelayHours, timer.currentDelayMinutes, timer.currentDelaySeconds);
 	timer.timerRunning = true;
 
 	timer.timer = new QTimer(this);
@@ -183,6 +186,13 @@ bool TimerModel::stopTimer(int row)
 
 	timer.timerRunning = false;
 
+	if (timer.type == Timer::Type::Timer)
+	{
+		fromTimeStamp(timer.getRestDelay(), timer.currentDelay);
+	}
+
+	timer.currentAbsoluteTime = QTime();
+
 	if (!timer.timer) return false;
 
 	timer.timer->stop();
@@ -198,9 +208,8 @@ bool TimerModel::resetTimer(int row)
 
 	Timer& timer = m_timers[row];
 
-	timer.currentDelayHours = 0;
-	timer.currentDelayMinutes = 0;
-	timer.currentDelaySeconds = 0;
+	timer.currentDelay.setHMS(0, 0, 0);
+	timer.currentAbsoluteTime = QTime();
 
 	return startTimer(row);
 }
@@ -222,12 +231,9 @@ void TimerModel::onTimeout()
 
 	Timer& timer = m_timers[row];
 
-	timer.decreaseRestDelay();
-	timer.updateCurrentDelay();
-
 	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
 
-	if (timer.restDelay == 0)
+	if (QTime::currentTime() >= timer.currentAbsoluteTime)
 	{
 		emit timerFinished(row);
 	}

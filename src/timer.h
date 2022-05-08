@@ -20,8 +20,12 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+int toTimestamp(const QTime& time);
 int toTimestamp(int h, int m, int s);
+bool fromTimeStamp(int timestamp, QTime& time);
 bool fromTimeStamp(int time, int* h, int* m, int* s);
+
+bool isNull(const QTime& time);
 
 class Timer
 {
@@ -38,28 +42,24 @@ public:
 	QString name;
 	Type type;
 
-	int currentDelayHours;
-	int currentDelayMinutes;
-	int currentDelaySeconds;
+	QTime currentAbsoluteTime;
 
-	int defaultDelayHours;
-	int defaultDelayMinutes;
-	int defaultDelaySeconds;
+	QTime currentDelay;
+	QTime defaultDelay;
 
 	QColor color;
-
-	int restDelay;
 
 	QTimer *timer;
 
 	bool timerRunning;
 
-	QString getDelayString() const;
-	QString getRestString() const;
+	int getCurrentDelay() const; // in seconds
+	QString getCurrentDelayString() const;
 
-	void decreaseRestDelay();
-	void updateRestDelay();
-	void updateCurrentDelay();
+	int getRestDelay() const; // in seconds
+	QString getRestDelayString() const;
+
+	void updateAbsoluteTime();
 };
 
 QDataStream& operator << (QDataStream& stream, const Timer& timer);

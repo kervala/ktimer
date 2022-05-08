@@ -20,9 +20,28 @@
 #include "common.h"
 #include "timer.h"
 
+int toTimestamp(const QTime& time)
+{
+	return QTime(0, 0).secsTo(time);
+}
+
 int toTimestamp(int h, int m, int s)
 {
 	return s + 60 * (m + (h * 60));
+}
+
+bool fromTimeStamp(int timestamp, QTime& time)
+{
+	time.setHMS(0, 0, 0);
+
+	if (timestamp < 1)
+	{
+		return false;
+	}
+
+	time = time.addSecs(timestamp);
+
+	return true;
 }
 
 bool fromTimeStamp(int time, int* h, int* m, int* s)
@@ -49,26 +68,56 @@ bool fromTimeStamp(int time, int* h, int* m, int* s)
 	return true;
 }
 
-Timer::Timer():type(Type::Timer), currentDelayHours(0), currentDelayMinutes(0), currentDelaySeconds(0), defaultDelayHours(0), defaultDelayMinutes(0), defaultDelaySeconds(0),
-	color(Qt::color0), restDelay(0), timer(nullptr), timerRunning(false)
+bool isNull(const QTime& time)
+{
+	return time.isNull() || (time.hour() == 0 && time.minute() == 0 && time.second() == 0);
+}
+
+Timer::Timer():type(Type::Timer), currentDelay(0, 0), defaultDelay(0, 0),
+	color(Qt::color0), timer(nullptr), timerRunning(false)
 {
 }
 
 Timer::Timer(const Timer& other):name(other.name), type(other.type),
-	currentDelayHours(other.currentDelayHours), currentDelayMinutes(other.currentDelayMinutes), currentDelaySeconds(other.currentDelaySeconds),
-	defaultDelayHours(other.defaultDelayHours), defaultDelayMinutes(other.defaultDelayMinutes), defaultDelaySeconds(other.defaultDelaySeconds),
-	color(other.color), restDelay(other.restDelay), timer(other.timer), timerRunning(other.timerRunning)
+	currentAbsoluteTime(other.currentAbsoluteTime),
+	currentDelay(other.currentDelay), defaultDelay(other.defaultDelay),
+	color(other.color), timer(other.timer), timerRunning(other.timerRunning)
 {
 }
 
-QString Timer::getDelayString() const
+int Timer::getCurrentDelay() const
 {
-	return QString("%1:%2:%3").arg(currentDelayHours, 2, 10, QChar('0')).arg(currentDelayMinutes, 2, 10, QChar('0')).arg(currentDelaySeconds, 2, 10, QChar('0'));
+	if (type == Type::Alarm)
+	{
+		return QTime::currentTime().secsTo(currentDelay);
+	}
+
+	return toTimestamp(currentDelay);
 }
 
-QString Timer::getRestString() const
+QString Timer::getCurrentDelayString() const
+{
+	return QString("%1:%2:%3")
+		.arg(currentDelay.hour(), 2, 10, QChar('0'))
+		.arg(currentDelay.minute(), 2, 10, QChar('0'))
+		.arg(currentDelay.second(), 2, 10, QChar('0'));
+}
+
+int Timer::getRestDelay() const
+{
+	if (currentAbsoluteTime.isNull())
+	{
+		return getCurrentDelay();
+	}
+
+	return QTime::currentTime().secsTo(currentAbsoluteTime);
+}
+
+QString Timer::getRestDelayString() const
 {
 	int h, m, s;
+
+	int restDelay = getRestDelay();
 
 	if (restDelay > -1)
 	{
@@ -81,42 +130,63 @@ QString Timer::getRestString() const
 		s = 0;
 	}
 
-	return QString("%1:%2:%3").arg(h, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0')).arg(s, 2, 10, QChar('0'));
+	return QString("%1:%2:%3")
+		.arg(h, 2, 10, QChar('0'))
+		.arg(m, 2, 10, QChar('0'))
+		.arg(s, 2, 10, QChar('0'));
 }
 
-void Timer::decreaseRestDelay()
+void Timer::updateAbsoluteTime()
 {
-	--restDelay;
-}
+	currentAbsoluteTime = QTime::currentTime().addSecs(getCurrentDelay());
 
-void Timer::updateRestDelay()
-{
-	restDelay = toTimestamp(currentDelayHours, currentDelayMinutes, currentDelaySeconds);
-}
-
-void Timer::updateCurrentDelay()
-{
-	fromTimeStamp(restDelay, &currentDelayHours, &currentDelayMinutes, &currentDelaySeconds);
+	qDebug() << "currentAbsoluteTime" << currentAbsoluteTime << "currentDelay" << currentDelay;
 }
 
 QDataStream& operator << (QDataStream& stream, const Timer &timer)
 {
-	stream << timer.name << timer.defaultDelayHours << timer.defaultDelayMinutes << timer.defaultDelaySeconds << timer.color << timer.type;
+	stream << timer.name << timer.defaultDelay.hour() << timer.defaultDelay.minute() << timer.defaultDelay.second()
+		<< timer.color << timer.type;
+
+	if (stream.device()->property("resume").toBool())
+	{
+		stream << timer.currentAbsoluteTime.hour() << timer.currentAbsoluteTime.minute() << timer.currentAbsoluteTime.second();
+	}
+	else
+	{
+		int d = 0;
+
+		stream << d << d << d;
+	}
 
 	return stream;
 }
 
+static void setHMS(QDataStream& stream, QTime& time)
+{
+	int h, m, s;
+
+	stream >> h >> m >> s;
+	time.setHMS(h, m, s);
+}
+
 QDataStream& operator >> (QDataStream& stream, Timer& timer)
 {
-	stream >> timer.name >> timer.defaultDelayHours >> timer.defaultDelayMinutes >> timer.defaultDelaySeconds >> timer.color;
+	stream >> timer.name;
+	
+	setHMS(stream, timer.defaultDelay);
+	
+	stream >> timer.color;
 
-	if (stream.device()->property("version") == 2)
+	if (stream.device()->property("version").toInt() >= 2)
 	{
 		stream >> timer.type;
-	}
 
-	// update rest delay
-	timer.updateRestDelay();
+		if (stream.device()->property("version").toInt() >= 3)
+		{
+			setHMS(stream, timer.currentAbsoluteTime);
+		}
+	}
 
 	return stream;
 }

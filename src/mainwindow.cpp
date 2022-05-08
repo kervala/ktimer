@@ -358,38 +358,41 @@ void MainWindow::onTopToggled(bool top)
 
 }
 
+static void setHMS(QObject* sender, Ui::MainWindow *ui, QTime& time, int delay)
+{
+	if (sender == ui->currentHoursSpinBox)
+	{
+		time.setHMS(delay, time.minute(), time.second());
+	}
+	else if (sender == ui->currentMinutesSpinBox)
+	{
+		time.setHMS(time.hour(), delay, time.second());
+	}
+	else if (sender == ui->currentSecondsSpinBox)
+	{
+		time.setHMS(time.hour(), time.minute(), delay);
+	}
+	else if (sender == ui->defaultHoursSpinBox)
+	{
+		time.setHMS(delay, time.minute(), time.second());
+	}
+	else if (sender == ui->defaultMinutesSpinBox)
+	{
+		time.setHMS(time.hour(), delay, time.second());
+	}
+	else if (sender == ui->defaultSecondsSpinBox)
+	{
+		time.setHMS(time.hour(), time.minute(), delay);
+	}
+}
+
 void MainWindow::onDelayChanged(int delay)
 {
 	if (m_selectedTimer < 0 || m_model->isTimerRunning(m_selectedTimer)) return;
 
 	Timer& timer = m_model->getTimer(m_selectedTimer);
 
-	if (sender() == m_ui->currentHoursSpinBox)
-	{
-		timer.currentDelayHours = delay;
-	}
-	else if (sender() == m_ui->currentMinutesSpinBox)
-	{
-		timer.currentDelayMinutes = delay;
-	}
-	else if (sender() == m_ui->currentSecondsSpinBox)
-	{
-		timer.currentDelaySeconds = delay;
-	}
-	else if (sender() == m_ui->defaultHoursSpinBox)
-	{
-		timer.defaultDelayHours = delay;
-	}
-	else if (sender() == m_ui->defaultMinutesSpinBox)
-	{
-		timer.defaultDelayMinutes = delay;
-	}
-	else if (sender() == m_ui->defaultSecondsSpinBox)
-	{
-		timer.defaultDelaySeconds = delay;
-	}
-
-	timer.updateRestDelay();
+	setHMS(sender(), m_ui, timer.currentDelay, delay);
 
 	m_model->updateTimer(m_selectedTimer);
 }
@@ -408,7 +411,7 @@ void MainWindow::onTimerFinished(int row)
 	const Timer& timer = m_model->getTimer(row);
 
 	SystrayIcon::getInstance()->displayMessage(tr("kTimer notification"),
-		tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name.isEmpty() ? tr("Unknown #%1").arg(row): timer.name).arg(timer.getDelayString()),
+		tr("End of timer %1 after %2. You can restart it if you need.").arg(timer.name.isEmpty() ? tr("Unknown #%1").arg(row): timer.name).arg(timer.getCurrentDelayString()),
 		SystrayIcon::Action::None);
 }
 
@@ -454,13 +457,13 @@ void MainWindow::displayTimer(int i)
 
 	m_ui->absoluteTimeCheckBox->setChecked(timer.type == Timer::Type::Alarm);
 
-	m_ui->currentHoursSpinBox->setValue(timer.currentDelayHours);
-	m_ui->currentMinutesSpinBox->setValue(timer.currentDelayMinutes);
-	m_ui->currentSecondsSpinBox->setValue(timer.currentDelaySeconds);
+	m_ui->currentHoursSpinBox->setValue(timer.currentDelay.hour());
+	m_ui->currentMinutesSpinBox->setValue(timer.currentDelay.minute());
+	m_ui->currentSecondsSpinBox->setValue(timer.currentDelay.second());
 
-	m_ui->defaultHoursSpinBox->setValue(timer.defaultDelayHours);
-	m_ui->defaultMinutesSpinBox->setValue(timer.defaultDelayMinutes);
-	m_ui->defaultSecondsSpinBox->setValue(timer.defaultDelaySeconds);
+	m_ui->defaultHoursSpinBox->setValue(timer.defaultDelay.hour());
+	m_ui->defaultMinutesSpinBox->setValue(timer.defaultDelay.minute());
+	m_ui->defaultSecondsSpinBox->setValue(timer.defaultDelay.second());
 }
 
 void MainWindow::updateButtons()
