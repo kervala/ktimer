@@ -74,7 +74,7 @@ bool isNull(const QTime& time)
 }
 
 Timer::Timer():type(Type::Timer), currentDelay(0, 0), defaultDelay(0, 0),
-	color(Qt::color0), timer(nullptr), timerRunning(false)
+	color(Qt::color0), timer(nullptr), timerRunning(false), notificationSent(false)
 {
 }
 

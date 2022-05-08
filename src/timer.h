@@ -52,6 +52,7 @@ public:
 	QTimer *timer;
 
 	bool timerRunning;
+	bool notificationSent;
 
 	int getCurrentDelay() const; // in seconds
 	QString getCurrentDelayString() const;

@@ -167,6 +167,7 @@ bool TimerModel::startTimer(int row)
 	}
 
 	timer.timerRunning = true;
+	timer.notificationSent = false;
 
 	timer.timer = new QTimer(this);
 	timer.timer->setInterval(1000);
@@ -185,6 +186,7 @@ bool TimerModel::stopTimer(int row)
 	Timer& timer = m_timers[row];
 
 	timer.timerRunning = false;
+	timer.notificationSent = false;
 
 	if (timer.type == Timer::Type::Timer)
 	{
@@ -233,9 +235,11 @@ void TimerModel::onTimeout()
 
 	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
 
-	if (QTime::currentTime() >= timer.currentAbsoluteTime)
+	if (!timer.notificationSent && QTime::currentTime() >= timer.currentAbsoluteTime)
 	{
 		emit timerFinished(row);
+
+		timer.notificationSent = true;
 	}
 }
 
