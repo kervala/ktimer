@@ -67,7 +67,7 @@ SETUP_EXTERNAL()
 GEN_CONFIG_H()
 GEN_REVISION_H()
 
-USE_QT_MODULES(Gui Network Svg Widgets WinExtras)
+USE_QT_MODULES(Gui Network Svg Widgets) # WinExtras
 
 # To fix compilation of MOC files under Linux
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src)

@@ -223,11 +223,7 @@ void ConfigFile::initDirectories()
 	// logs directory
 	QString documentsPath;
 
-#ifdef USE_QT5
 	documentsPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-#else
-	documentsPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
-#endif
 
 	// define default logs directory
 	m_defaultLogsDirectory = QString("%1/kdAmn/logs").arg(documentsPath);
@@ -316,14 +312,9 @@ void ConfigFile::initDirectories()
 #endif
 
 	// cache directory
-#ifdef USE_QT5
 	m_cacheDirectory = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-#else
-	m_cacheDirectory = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-#endif
 
 	// local data
-#ifdef USE_QT5
 	QStandardPaths::StandardLocation location;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
@@ -332,16 +323,9 @@ void ConfigFile::initDirectories()
 	location = QStandardPaths::ConfigLocation;
 #endif
 	m_localDataDirectory = QStandardPaths::writableLocation(location);
-#else
-	m_localDataDirectory = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-#endif
 
 	// download directory
-#ifdef USE_QT5
 	m_downloadDirectory = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-#else
-	m_downloadDirectory = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
-#endif
 
 	// create directories
 	QDir().mkpath(m_localDataDirectory);

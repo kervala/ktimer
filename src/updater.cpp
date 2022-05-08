@@ -50,16 +50,10 @@ void Updater::onReply(QNetworkReply *reply)
 	// received software update
 	QVariantMap map;
 
-#ifdef USE_QT5
 	QJsonParseError jsonError;
 	QJsonDocument doc = QJsonDocument::fromJson(content, &jsonError);
 
 	if (jsonError.error == QJsonParseError::NoError) map = doc.toVariant().toMap();
-
-#else
-	QScriptEngine engine;
-	map = engine.evaluate("(" + QString(content) + ")").toVariant().toMap();
-#endif
 
 	int result = map["result"].toInt();
 

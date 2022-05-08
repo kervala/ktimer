@@ -82,32 +82,6 @@ QString encodeEntities(const QString& src, const QString& force)
 	return tmp;
 }
 
-/***************************************************************************//*!
- * @brief Allows decode &#...; into UNICODE (utf8) character.
- * @param[in] src    Text to analyze
- * @return UNICODE (utf8) text.
- *
- * @note Do not forget to include QRegExp
- */
-QString decodeEntities(const QString& src)
-{
-	initSpecialEntities();
-
-	QString ret(src);
-	QRegExp re("&#([0-9]+);");
-	re.setMinimal(true);
-
-	int pos = 0;
-
-	while((pos = re.indexIn(src, pos)) != -1)
-	{
-		ret = ret.replace(re.cap(0), QChar(re.cap(1).toInt(0, 10)));
-		pos += re.matchedLength();
-	}
-
-	return ret;
-}
-
 QString convertDateToISO(const QString &date)
 {
 	// Oct 30, 2014, 1:50:33 PM
@@ -205,41 +179,4 @@ QString GetUserAgent()
 	}
 
 	return s_userAgent;
-}
-
-QString GetSupportedImageFormatsFilter()
-{
-	if (s_imagesFilter.isEmpty())
-	{
-		QList<QByteArray> formats = QImageReader::supportedImageFormats();
-
-		foreach(const QByteArray &format, formats)
-		{
-			if (!s_imagesFilter.isEmpty()) s_imagesFilter += "|";
-
-			s_imagesFilter += format;
-		}
-
-		s_imagesFilter = "(" + s_imagesFilter + ")";
-	}
-
-	return s_imagesFilter;
-}
-
-Window getWindowWithTitle(const QString& title)
-{
-	if (title.isEmpty()) return Window();
-
-	Windows windows;
-	createWindowsList(windows);
-
-	for (int i = 0; i < windows.size(); ++i)
-	{
-		if (windows[i].title == title)
-		{
-			return windows[i];
-		}
-	}
-
-	return Window();
 }

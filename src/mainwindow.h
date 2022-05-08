@@ -23,7 +23,6 @@
 #include "systrayicon.h"
 #include "timer.h"
 
-class QWinTaskbarButton;
 class Updater;
 class TimerModel;
 
@@ -99,8 +98,6 @@ protected:
 	int currentDelayToTimestamp();
 	bool currentDelayFromTimeStamp(int time);
 	void updateLayout();
-
-	QWinTaskbarButton *m_button;
 
 	Ui::MainWindow *m_ui;
 

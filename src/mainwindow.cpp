@@ -28,11 +28,6 @@
 #include "updater.h"
 #include "utils.h"
 
-#ifdef Q_OS_WIN32
-#include <QtWinExtras/QWinTaskbarProgress>
-#include <QtWinExtras/QWinTaskbarButton>
-#endif
-
 #ifdef DEBUG_NEW
 	#define new DEBUG_NEW
 #endif
@@ -42,10 +37,6 @@ m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr)
 {
 	m_ui = new Ui::MainWindow();
 	m_ui->setupUi(this);
-
-#ifdef Q_OS_WIN32
-	m_button = new QWinTaskbarButton(this);
-#endif
 
 	QSize size = ConfigFile::getInstance()->getWindowSize();
 	if (!size.isNull()) resize(size);
@@ -135,10 +126,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::showEvent(QShowEvent *e)
 {
-#ifdef Q_OS_WIN32
-	m_button->setWindow(windowHandle());
-#endif
-
 	onTopToggled(m_ui->actionAlwaysOnTop->isChecked());
 
 	e->accept();
@@ -627,30 +614,5 @@ void MainWindow::onNoNewVersion()
 
 void MainWindow::onProgress(qint64 readBytes, qint64 totalBytes)
 {
-#ifdef Q_OS_WIN32
-	QWinTaskbarProgress *progress = m_button->progress();
-
-	if (readBytes == totalBytes)
-	{
-		// end
-		progress->hide();
-	}
-	else if (readBytes == 0)
-	{
-//		TODO: see why it doesn't work
-//		m_button->setOverlayIcon(style()->standardIcon(QStyle::SP_MediaPlay) /* QIcon(":/icons/upload.svg") */);
-//		m_button->setOverlayAccessibleDescription(tr("Upload"));
-
-		// beginning
-		progress->show();
-		progress->setRange(0, totalBytes);
-	}
-	else
-	{
-		progress->show();
-		progress->setValue(readBytes);
-	}
-#else
 	// TODO: for other OSes
-#endif
 }
