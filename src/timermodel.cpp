@@ -158,11 +158,11 @@ bool TimerModel::startTimer(int row)
 
 		if (timer.type == Timer::Type::Alarm)
 		{
-			timer.currentAbsoluteTime = timer.currentDelay;
+			timer.currentAbsoluteTime.setTime(timer.currentDelay);
 		}
 		else
 		{
-			timer.currentAbsoluteTime = QTime::currentTime().addSecs(toTimestamp(timer.currentDelay));
+			timer.currentAbsoluteTime = QDateTime::currentDateTime().addSecs(toTimestamp(timer.currentDelay));
 		}
 	}
 
@@ -193,7 +193,7 @@ bool TimerModel::stopTimer(int row)
 		fromTimeStamp(timer.getRestDelay(), timer.currentDelay);
 	}
 
-	timer.currentAbsoluteTime = QTime();
+	timer.currentAbsoluteTime = QDateTime();
 
 	if (!timer.timer) return false;
 
@@ -211,7 +211,7 @@ bool TimerModel::resetTimer(int row)
 	Timer& timer = m_timers[row];
 
 	timer.currentDelay.setHMS(0, 0, 0);
-	timer.currentAbsoluteTime = QTime();
+	timer.currentAbsoluteTime = QDateTime();
 
 	return startTimer(row);
 }
@@ -235,7 +235,7 @@ void TimerModel::onTimeout()
 
 	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
 
-	if (!timer.notificationSent && QTime::currentTime() >= timer.currentAbsoluteTime)
+	if (!timer.notificationSent && QDateTime::currentDateTime() >= timer.currentAbsoluteTime)
 	{
 		emit timerFinished(row);
 

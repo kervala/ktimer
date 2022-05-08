@@ -110,7 +110,7 @@ int Timer::getRestDelay() const
 		return getCurrentDelay();
 	}
 
-	return QTime::currentTime().secsTo(currentAbsoluteTime);
+	return QDateTime::currentDateTime().secsTo(currentAbsoluteTime);
 }
 
 QString Timer::getRestDelayString() const
@@ -138,9 +138,7 @@ QString Timer::getRestDelayString() const
 
 void Timer::updateAbsoluteTime()
 {
-	currentAbsoluteTime = QTime::currentTime().addSecs(getCurrentDelay());
-
-	qDebug() << "currentAbsoluteTime" << currentAbsoluteTime << "currentDelay" << currentDelay;
+	currentAbsoluteTime = QDateTime::currentDateTime().addSecs(getCurrentDelay());
 }
 
 QDataStream& operator << (QDataStream& stream, const Timer &timer)
@@ -150,7 +148,9 @@ QDataStream& operator << (QDataStream& stream, const Timer &timer)
 
 	if (stream.device()->property("resume").toBool())
 	{
-		stream << timer.currentAbsoluteTime.hour() << timer.currentAbsoluteTime.minute() << timer.currentAbsoluteTime.second();
+		stream << timer.currentAbsoluteTime.time().hour()
+			<< timer.currentAbsoluteTime.time().minute()
+			<< timer.currentAbsoluteTime.time().second();
 	}
 	else
 	{
@@ -160,6 +160,14 @@ QDataStream& operator << (QDataStream& stream, const Timer &timer)
 	}
 
 	return stream;
+}
+
+static void setHMS(QDataStream& stream, QDateTime& time)
+{
+	int h, m, s;
+
+	stream >> h >> m >> s;
+	time.time().setHMS(h, m, s);
 }
 
 static void setHMS(QDataStream& stream, QTime& time)

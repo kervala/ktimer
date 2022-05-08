@@ -42,7 +42,7 @@ public:
 	QString name;
 	Type type;
 
-	QTime currentAbsoluteTime;
+	QDateTime currentAbsoluteTime;
 
 	QTime currentDelay;
 	QTime defaultDelay;
