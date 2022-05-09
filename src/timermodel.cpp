@@ -158,6 +158,7 @@ bool TimerModel::startTimer(int row)
 
 		if (timer.type == Timer::Type::Alarm)
 		{
+			timer.currentAbsoluteTime = QDateTime::currentDateTime();
 			timer.currentAbsoluteTime.setTime(timer.currentDelay);
 		}
 		else

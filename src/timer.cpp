@@ -167,7 +167,19 @@ static void setHMS(QDataStream& stream, QDateTime& time)
 	int h, m, s;
 
 	stream >> h >> m >> s;
-	time.time().setHMS(h, m, s);
+
+	if (h == 0 && m == 0 && s == 0)
+	{
+		time = QDateTime(); // invalid
+	}
+	else
+	{
+		// today
+		time = QDateTime::currentDateTime();
+
+		// only change hour, minute and second
+		time.time().setHMS(h, m, s);
+	}
 }
 
 static void setHMS(QDataStream& stream, QTime& time)
