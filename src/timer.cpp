@@ -148,9 +148,18 @@ QDataStream& operator << (QDataStream& stream, const Timer &timer)
 
 	if (stream.device()->property("resume").toBool())
 	{
-		stream << timer.currentAbsoluteTime.time().hour()
-			<< timer.currentAbsoluteTime.time().minute()
-			<< timer.currentAbsoluteTime.time().second();
+		if (timer.currentAbsoluteTime.isNull())
+		{
+			int d = 0;
+
+			stream << d << d << d;
+		}
+		else
+		{
+			stream << timer.currentAbsoluteTime.time().hour()
+				<< timer.currentAbsoluteTime.time().minute()
+				<< timer.currentAbsoluteTime.time().second();
+		}
 	}
 	else
 	{
@@ -187,7 +196,15 @@ static void setHMS(QDataStream& stream, QTime& time)
 	int h, m, s;
 
 	stream >> h >> m >> s;
-	time.setHMS(h, m, s);
+
+	if (h == 0 && m == 0 && s == 0)
+	{
+		time = QTime(); // invalid
+	}
+	else
+	{
+		time.setHMS(h, m, s);
+	}
 }
 
 QDataStream& operator >> (QDataStream& stream, Timer& timer)
