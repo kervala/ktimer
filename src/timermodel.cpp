@@ -40,7 +40,7 @@ SMagicHeader s_header = { "TIFK" };
 // version 3:
 // - added "current absolute time" variable (to resume a timer)
 
-quint32 s_version = 2;
+quint32 s_version = 3;
 
 TimerModel::TimerModel(QObject* parent) : QAbstractTableModel(parent)
 {
