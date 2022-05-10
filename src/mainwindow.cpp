@@ -115,8 +115,19 @@ m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr)
 
 	createMenu();
 
-	// create a default timer
-	onNew();
+	const QString filename = ConfigFile::getInstance()->getLocalDataDirectory() + "/autosave.ktf";
+
+	if (m_model->load(filename))
+	{
+		m_ui->timersListView->selectionModel()->setCurrentIndex(m_model->index(m_model->rowCount() - 1, 0), QItemSelectionModel::ClearAndSelect);
+
+		updateGeometry();
+	}
+	else
+	{
+		// create a default timer
+		onNew();
+	}
 }
 
 MainWindow::~MainWindow()
@@ -133,6 +144,11 @@ void MainWindow::showEvent(QShowEvent *e)
 
 void MainWindow::closeEvent(QCloseEvent *e)
 {
+	const QString filename = ConfigFile::getInstance()->getLocalDataDirectory() + "/autosave.ktf";
+
+	// save current timers
+	m_model->save(filename, true);
+
 	hide();
 
 	e->accept();

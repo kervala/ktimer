@@ -52,7 +52,7 @@ public:
 	void reset();
 
 	bool load(const QString& filename);
-	bool save(const QString& filename);
+	bool save(const QString& filename, bool resume = false);
 
 	QString getFilename() const;
 

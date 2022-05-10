@@ -39,8 +39,11 @@ SMagicHeader s_header = { "TIFK" };
 //
 // version 3:
 // - added "current absolute time" variable (to resume a timer)
+//
+// version 4:
+// - added "currentDelay" and "running" boolean (to resume a timer)
 
-quint32 s_version = 3;
+quint32 s_version = 4;
 
 TimerModel::TimerModel(QObject* parent) : QAbstractTableModel(parent)
 {
@@ -165,6 +168,12 @@ bool TimerModel::startTimer(int row)
 		{
 			timer.currentAbsoluteTime = QDateTime::currentDateTime().addSecs(toTimestamp(timer.currentDelay));
 		}
+	}
+
+	// already finished
+	if (timer.currentAbsoluteTime <= QDateTime::currentDateTime())
+	{
+		return false;
 	}
 
 	timer.timerRunning = true;
@@ -299,7 +308,7 @@ bool TimerModel::load(const QString& filename)
 	for (int i = 0, ilen = m_timers.size(); i < ilen; ++i)
 	{
 		// automatically start alarms
-		if (m_timers[i].type == Timer::Type::Alarm)
+		if (m_timers[i].type == Timer::Type::Alarm || m_timers[i].timerRunning)
 		{
 			startTimer(i);
 		}
@@ -308,7 +317,7 @@ bool TimerModel::load(const QString& filename)
 	return true;
 }
 
-bool TimerModel::save(const QString& filename)
+bool TimerModel::save(const QString& filename, bool resume)
 {
 	if (filename.isEmpty()) return false;
 
@@ -327,6 +336,12 @@ bool TimerModel::save(const QString& filename)
 #else
 	stream.setVersion(QDataStream::Qt_5_6);
 #endif
+
+	// resuming
+	if (resume)
+	{
+		stream.device()->setProperty("resume", true);
+	}
 
 	stream << m_timers;
 

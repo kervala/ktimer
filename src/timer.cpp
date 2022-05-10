@@ -143,8 +143,9 @@ void Timer::updateAbsoluteTime()
 
 QDataStream& operator << (QDataStream& stream, const Timer &timer)
 {
-	stream << timer.name << timer.defaultDelay.hour() << timer.defaultDelay.minute() << timer.defaultDelay.second()
-		<< timer.color << timer.type;
+	stream << timer.name;
+	stream << timer.defaultDelay.hour() << timer.defaultDelay.minute() << timer.defaultDelay.second();
+	stream << timer.color << timer.type;
 
 	if (stream.device()->property("resume").toBool())
 	{
@@ -160,12 +161,23 @@ QDataStream& operator << (QDataStream& stream, const Timer &timer)
 				<< timer.currentAbsoluteTime.time().minute()
 				<< timer.currentAbsoluteTime.time().second();
 		}
+
+		stream << timer.currentDelay.hour()
+			<< timer.currentDelay.minute()
+			<< timer.currentDelay.second();
+
+		stream << timer.timerRunning;
 	}
 	else
 	{
 		int d = 0;
 
-		stream << d << d << d;
+		stream << d << d << d // currentAbsoluteTime
+			<< d << d; // currentDelay;
+
+		bool running = false;
+
+		stream << running;
 	}
 
 	return stream;
@@ -177,7 +189,7 @@ static void setHMS(QDataStream& stream, QDateTime& time)
 
 	stream >> h >> m >> s;
 
-	if (h == 0 && m == 0 && s == 0)
+	if (h < 0 && m < 0 && s < 0)
 	{
 		time = QDateTime(); // invalid
 	}
@@ -187,7 +199,7 @@ static void setHMS(QDataStream& stream, QDateTime& time)
 		time = QDateTime::currentDateTime();
 
 		// only change hour, minute and second
-		time.time().setHMS(h, m, s);
+		time.setTime(QTime(h, m, s));
 	}
 }
 
@@ -197,7 +209,7 @@ static void setHMS(QDataStream& stream, QTime& time)
 
 	stream >> h >> m >> s;
 
-	if (h == 0 && m == 0 && s == 0)
+	if (h < 0 && m < 0 && s < 0)
 	{
 		time = QTime(); // invalid
 	}
@@ -222,6 +234,13 @@ QDataStream& operator >> (QDataStream& stream, Timer& timer)
 		if (stream.device()->property("version").toInt() >= 3)
 		{
 			setHMS(stream, timer.currentAbsoluteTime);
+
+			if (stream.device()->property("version").toInt() >= 4)
+			{
+				setHMS(stream, timer.currentDelay);
+
+				stream >> timer.timerRunning;
+			}
 		}
 	}
 
