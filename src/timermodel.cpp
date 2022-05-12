@@ -146,21 +146,29 @@ bool TimerModel::startTimer(int row)
 	if (timer.timer) return false;
 
 	// already finished
-	if (!timer.currentAbsoluteTime.isNull() && timer.currentAbsoluteTime <= QDateTime::currentDateTime())
+	if (!timer.currentAbsoluteTime.isNull())
 	{
-		if (timer.type == Timer::Type::Timer)
+		if (timer.currentAbsoluteTime <= QDateTime::currentDateTime())
 		{
-			// reset current time
-			timer.currentAbsoluteTime = QDateTime();
-		}
-		else
-		{
-			// same day and time is correct, don't start it
-			if (timer.currentAbsoluteTime.time() == timer.currentDelay && timer.currentAbsoluteTime.date() == QDate::currentDate())
+			if (timer.type == Timer::Type::Timer)
 			{
-				return false;
+				// reset current time
+				timer.currentAbsoluteTime = QDateTime();
 			}
+			else
+			{
+				// same day and time is correct, don't start it
+				if (timer.currentAbsoluteTime.time() == timer.currentDelay && timer.currentAbsoluteTime.date() == QDate::currentDate())
+				{
+					return false;
+				}
 
+				// reset current time
+				timer.currentAbsoluteTime = QDateTime();
+			}
+		}
+		else if (timer.type == Timer::Type::Timer && timer.currentAbsoluteTime > QDateTime::currentDateTime().addSecs(toTimestamp(timer.currentDelay)))
+		{
 			// reset current time
 			timer.currentAbsoluteTime = QDateTime();
 		}
