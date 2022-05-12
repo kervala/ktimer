@@ -94,7 +94,7 @@ QVariant TimerModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-bool TimerModel::insertRows(int position, int rows, const QModelIndex& parent)
+bool TimerModel::insertRows(int position, int rows, const QModelIndex& /* parent */)
 {
 	bool insertAtTheEnd = position == -1;
 
@@ -121,7 +121,7 @@ bool TimerModel::insertRows(int position, int rows, const QModelIndex& parent)
 	return true;
 }
 
-bool TimerModel::removeRows(int position, int rows, const QModelIndex& parent)
+bool TimerModel::removeRows(int position, int rows, const QModelIndex& /* parent */)
 {
 	beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
