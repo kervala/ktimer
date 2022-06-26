@@ -270,6 +270,7 @@ void MainWindow::onResetClicked()
 	if (m_selectedTimer < 0) return;
 
 	m_model->resetTimer(m_selectedTimer);
+	//m_model->startTimer(m_selectedTimer);
 
 	updateButtons();
 }
