@@ -246,7 +246,7 @@ bool TimerModel::resetTimer(int row)
 	timer.currentDelay.setHMS(0, 0, 0);
 	timer.currentAbsoluteTime = QDateTime();
 
-	return startTimer(row);
+	return true;
 }
 
 bool TimerModel::isTimerRunning(int row)
@@ -334,6 +334,11 @@ bool TimerModel::load(const QString& filename)
 		if (m_timers[i].type == Timer::Type::Alarm || m_timers[i].timerRunning)
 		{
 			startTimer(i);
+		}
+		else
+		{
+			// reset current and absolute timer since they are not running
+			resetTimer(i);
 		}
 	}
 
