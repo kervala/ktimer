@@ -36,11 +36,12 @@ public:
 		Alarm
 	};
 
-	Timer();
+	Timer(int row = -1);
 	Timer(const Timer& other);
 
 	QString name;
 	Type type;
+	int row;
 
 	QDateTime currentAbsoluteTime;
 
