@@ -73,15 +73,15 @@ bool isNull(const QTime& time)
 	return time.isNull() || (time.hour() == 0 && time.minute() == 0 && time.second() == 0);
 }
 
-Timer::Timer():type(Type::Timer), currentDelay(0, 0), defaultDelay(0, 0),
-	color(Qt::color0), timer(nullptr), timerRunning(false), notificationSent(false)
+Timer::Timer(int r):type(Type::Timer), currentDelay(0, 0), defaultDelay(0, 0),
+	color(Qt::color0), timerRunning(false), notificationSent(false), row(r)
 {
 }
 
 Timer::Timer(const Timer& other):name(other.name), type(other.type),
 	currentAbsoluteTime(other.currentAbsoluteTime),
 	currentDelay(other.currentDelay), defaultDelay(other.defaultDelay),
-	color(other.color), timer(other.timer), timerRunning(other.timerRunning)
+	color(other.color), timerRunning(other.timerRunning), row(other.row)
 {
 }
 

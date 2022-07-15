@@ -49,8 +49,6 @@ public:
 
 	QColor color;
 
-	QTimer *timer;
-
 	bool timerRunning;
 	bool notificationSent;
 

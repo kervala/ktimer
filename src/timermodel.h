@@ -66,6 +66,8 @@ private:
 	QVector<Timer> m_timers;
 
 	QString m_filename;
+
+	QTimer* m_timer;
 };
 
 #endif

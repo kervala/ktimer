@@ -45,7 +45,7 @@ SMagicHeader s_header = { "TIFK" };
 
 quint32 s_version = 4;
 
-TimerModel::TimerModel(QObject* parent) : QAbstractTableModel(parent)
+TimerModel::TimerModel(QObject* parent) : QAbstractTableModel(parent), m_timer(nullptr)
 {
 }
 
@@ -104,7 +104,7 @@ bool TimerModel::insertRows(int position, int rows, const QModelIndex& /* parent
 
 	for (int row = 0; row < rows; ++row)
 	{
-		Timer timer;
+		Timer timer(row);
 		timer.name = tr("Timer #%1").arg(rowCount() + 1);
 
 		if (insertAtTheEnd)
@@ -142,8 +142,6 @@ Timer& TimerModel::getTimer(int row)
 bool TimerModel::startTimer(int row)
 {
 	Timer& timer = m_timers[row];
-
-	if (timer.timer) return false;
 
 	// already finished
 	if (!timer.currentAbsoluteTime.isNull())
@@ -202,37 +200,57 @@ bool TimerModel::startTimer(int row)
 	timer.timerRunning = true;
 	timer.notificationSent = false;
 
-	timer.timer = new QTimer(this);
-	timer.timer->setInterval(1000);
-	timer.timer->start();
-	timer.timer->setProperty("row", row);
+	if (!m_timer)
+	{
+		m_timer = new QTimer(this);
+		m_timer->setInterval(1000);
+		m_timer->start();
+
+		connect(m_timer, &QTimer::timeout, this, &TimerModel::onTimeout);
+	}
 
 	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
-
-	connect(timer.timer, &QTimer::timeout, this, &TimerModel::onTimeout);
 
 	return true;
 }
 
 bool TimerModel::stopTimer(int row)
 {
-	Timer& timer = m_timers[row];
-
-	timer.timerRunning = false;
-	timer.notificationSent = false;
-
-	if (timer.type == Timer::Type::Timer)
 	{
-		fromTimeStamp(timer.getRestDelay(), timer.currentDelay);
+		Timer& timer = m_timers[row];
+
+		timer.timerRunning = false;
+		timer.notificationSent = false;
+
+		if (timer.type == Timer::Type::Timer)
+		{
+			fromTimeStamp(timer.getRestDelay(), timer.currentDelay);
+		}
+
+		timer.currentAbsoluteTime = QDateTime();
 	}
 
-	timer.currentAbsoluteTime = QDateTime();
+	if (m_timer)
+	{
+		bool allStopped = true;
 
-	if (!timer.timer) return false;
+		for (Timer& timer : m_timers)
+		{
+			if (timer.timerRunning)
+			{
+				// at least one timer is still running, don't stop the timer
+				allStopped = false;
+				break;
+			}
+		}
 
-	timer.timer->stop();
-	timer.timer->deleteLater();
-	timer.timer = nullptr;
+		if (allStopped)
+		{
+			m_timer->stop();
+			m_timer->deleteLater();
+			m_timer = nullptr;
+		}
+	}
 
 	return true;
 }
@@ -258,21 +276,18 @@ bool TimerModel::isTimerRunning(int row)
 
 void TimerModel::onTimeout()
 {
-	QObject* t = sender();
-
-	if (!t || !t->property("row").isValid()) return;
-
-	int row = t->property("row").toInt();
-
-	Timer& timer = m_timers[row];
-
-	emit dataChanged(index(row, 0), index(row, 0), { Qt::DisplayRole });
-
-	if (!timer.notificationSent && QDateTime::currentDateTime() >= timer.currentAbsoluteTime)
+	for (Timer& timer : m_timers)
 	{
-		emit timerFinished(row);
+		if (timer.row == -1 || !timer.timerRunning) continue;
 
-		timer.notificationSent = true;
+		emit dataChanged(index(timer.row, 0), index(timer.row, 0), { Qt::DisplayRole });
+
+		if (!timer.notificationSent && QDateTime::currentDateTime() >= timer.currentAbsoluteTime)
+		{
+			emit timerFinished(timer.row);
+
+			timer.notificationSent = true;
+		}
 	}
 }
 
@@ -328,17 +343,22 @@ bool TimerModel::load(const QString& filename)
 
 	m_filename = filename;
 
-	for (int i = 0, ilen = m_timers.size(); i < ilen; ++i)
+	int row = 0;
+
+	for (Timer &timer: m_timers)
 	{
+		// fix timers row
+		timer.row = row++;
+
 		// automatically start alarms
-		if (m_timers[i].type == Timer::Type::Alarm || m_timers[i].timerRunning)
+		if (timer.type == Timer::Type::Alarm || timer.timerRunning)
 		{
-			startTimer(i);
+			startTimer(timer.row);
 		}
 		else
 		{
 			// reset current and absolute timer since they are not running
-			resetTimer(i);
+			resetTimer(timer.row);
 		}
 	}
 
@@ -380,9 +400,11 @@ bool TimerModel::save(const QString& filename, bool resume)
 
 bool TimerModel::newTimer()
 {
-	beginInsertRows(QModelIndex(), rowCount(), rowCount());
+	int row = rowCount();
 
-	m_timers.append(Timer());
+	beginInsertRows(QModelIndex(), row, row);
+
+	m_timers.append(Timer(row));
 
 	endInsertRows();
 	return true;
