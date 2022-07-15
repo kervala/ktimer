@@ -362,31 +362,31 @@ void MainWindow::onTopToggled(bool top)
 
 }
 
-static void setHMS(QObject* sender, Ui::MainWindow *ui, QTime& time, int delay)
+static void setHMS(QObject* sender, Ui::MainWindow *ui, Timer& timer, int delay)
 {
 	if (sender == ui->currentHoursSpinBox)
 	{
-		time.setHMS(delay, time.minute(), time.second());
+		timer.currentDelay.setHMS(delay, timer.currentDelay.minute(), timer.currentDelay.second());
 	}
 	else if (sender == ui->currentMinutesSpinBox)
 	{
-		time.setHMS(time.hour(), delay, time.second());
+		timer.currentDelay.setHMS(timer.currentDelay.hour(), delay, timer.currentDelay.second());
 	}
 	else if (sender == ui->currentSecondsSpinBox)
 	{
-		time.setHMS(time.hour(), time.minute(), delay);
+		timer.currentDelay.setHMS(timer.currentDelay.hour(), timer.currentDelay.minute(), delay);
 	}
 	else if (sender == ui->defaultHoursSpinBox)
 	{
-		time.setHMS(delay, time.minute(), time.second());
+		timer.defaultDelay.setHMS(delay, timer.defaultDelay.minute(), timer.defaultDelay.second());
 	}
 	else if (sender == ui->defaultMinutesSpinBox)
 	{
-		time.setHMS(time.hour(), delay, time.second());
+		timer.defaultDelay.setHMS(timer.defaultDelay.hour(), delay, timer.defaultDelay.second());
 	}
 	else if (sender == ui->defaultSecondsSpinBox)
 	{
-		time.setHMS(time.hour(), time.minute(), delay);
+		timer.defaultDelay.setHMS(timer.defaultDelay.hour(), timer.defaultDelay.minute(), delay);
 	}
 }
 
@@ -396,7 +396,7 @@ void MainWindow::onDelayChanged(int delay)
 
 	Timer& timer = m_model->getTimer(m_selectedTimer);
 
-	setHMS(sender(), m_ui, timer.currentDelay, delay);
+	setHMS(sender(), m_ui, timer, delay);
 
 	m_model->updateTimer(m_selectedTimer);
 }
