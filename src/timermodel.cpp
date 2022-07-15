@@ -357,6 +357,8 @@ bool TimerModel::load(const QString& filename)
 		}
 		else
 		{
+			timer.notificationSent = true;
+
 			// reset current and absolute timer since they are not running
 			resetTimer(timer.row);
 		}
