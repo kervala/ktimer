@@ -33,7 +33,7 @@
 #endif
 
 MainWindow::MainWindow() : QMainWindow(nullptr, Qt::WindowCloseButtonHint), m_selectedTimer(-1), m_model(nullptr), m_menu(nullptr),
-m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr)
+m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr), m_minimalAction(nullptr)
 {
 	m_ui = new Ui::MainWindow();
 	m_ui->setupUi(this);
@@ -86,6 +86,7 @@ m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr)
 	connect(m_ui->actionShowDetails, &QAction::toggled, this, &MainWindow::onDetailsToggled);
 	connect(m_ui->actionShowOnlyActiveTimers, &QAction::toggled, this, &MainWindow::onActiveToggled);
 	connect(m_ui->actionAlwaysOnTop, &QAction::toggled, this, &MainWindow::onTopToggled);
+	connect(m_ui->actionShowMinimal, &QAction::toggled, this, &MainWindow::onMinimalToggled);
 
 	// Delay
 
@@ -336,6 +337,17 @@ void MainWindow::onActiveToggled(bool active)
 	updateLayout();
 }
 
+void MainWindow::onMinimalToggled(bool active)
+{
+	//m_ui->mainLayout->setContentsMargins(0, 0, 0, 0);
+	//m_ui->mainLayout->setSpacing(0);
+
+	m_ui->actionShowDetails->setChecked(!active);
+	m_ui->actionShowOnlyActiveTimers->setChecked(active);
+
+	m_ui->menubar->setHidden(active);
+}
+
 void MainWindow::onTopToggled(bool top)
 {
 #ifdef Q_OS_WIN
@@ -522,6 +534,10 @@ void MainWindow::createMenu()
 	m_menu->addAction(m_resetAction);
 	m_menu->addAction(m_startAction);
 	m_menu->addAction(m_stopAction);
+	m_menu->addSeparator();
+	m_menu->addAction(m_ui->actionShowMinimal);
+	m_menu->addAction(m_ui->actionShowDetails);
+	m_menu->addAction(m_ui->actionShowOnlyActiveTimers);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent* event)

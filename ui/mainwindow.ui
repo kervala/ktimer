@@ -246,6 +246,7 @@
     <addaction name="actionAlwaysOnTop"/>
     <addaction name="actionShowOnlyActiveTimers"/>
     <addaction name="actionShowDetails"/>
+    <addaction name="actionShowMinimal"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -328,6 +329,14 @@
    </property>
    <property name="text">
     <string>Show details</string>
+   </property>
+  </action>
+  <action name="actionShowMinimal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show minimal</string>
    </property>
   </action>
  </widget>

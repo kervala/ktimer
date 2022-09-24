@@ -55,6 +55,7 @@ public slots:
 	void onDetailsToggled(bool details);
 	void onActiveToggled(bool active);
 	void onTopToggled(bool active);
+	void onMinimalToggled(bool active);
 
 	// file menu
 	void onNew();
@@ -111,6 +112,7 @@ protected:
 	QAction* m_resetAction;
 	QAction* m_startAction;
 	QAction* m_stopAction;
+	QAction* m_minimalAction;
 };
 
 #endif
