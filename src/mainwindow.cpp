@@ -488,13 +488,18 @@ void MainWindow::updateButtons()
 {
 	bool timerRunning = m_selectedTimer > -1 && m_model->isTimerRunning(m_selectedTimer);
 
-	const Timer& timer = m_model->getTimer(m_selectedTimer);
+	QColor timerColor(Qt::black);
+	
+	if (m_selectedTimer > -1)
+	{
+		timerColor = m_model->getTimer(m_selectedTimer).color;
+	}
 
 	QPixmap pixmap(16, 16);
 	pixmap.fill(Qt::transparent);
 
 	QPainter painter(&pixmap);
-	painter.setBrush(timer.color);
+	painter.setBrush(timerColor);
 	painter.drawRect(QRect(0, 2, 10, 12));
 
 	QIcon icon(pixmap);
