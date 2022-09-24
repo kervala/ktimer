@@ -19,6 +19,7 @@
 
 #include "common.h"
 #include "timerdelegate.h"
+#include "timersview.h"
 
 TimerDelegate::TimerDelegate(QObject *parent = nullptr):QAbstractItemDelegate(parent)
 {
@@ -55,7 +56,18 @@ void TimerDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
 QSize TimerDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-	return QSize(-1, 40);
+	const TimersView *view = qobject_cast<const TimersView*>(option.widget);
+
+	int height = 40;
+	
+	if (view->model()->property("shrinkable").toBool())
+	{
+		height = qMin(qMax(12, view->height() / view->visibleItemsCount()), height);
+	}
+
+	//qDebug() << "sizeHint delegate" << (ndigits * height / 2);
+
+	return QSize(ndigits * height / 2, height);
 }
 
 void TimerDelegate::drawString(const QString& s, const QStyleOptionViewItem& options, QPainter& p) const

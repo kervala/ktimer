@@ -322,6 +322,8 @@ void MainWindow::onDetailsToggled(bool details)
 {
 	m_ui->detailsGroupBox->setHidden(!details);
 
+	m_model->setProperty("shrinkable", !details);
+
 	updateLayout();
 }
 
