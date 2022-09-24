@@ -4,191 +4,233 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../ui/mainwindow.ui" line="268"/>
+        <location filename="../ui/mainwindow.ui" line="237"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="214"/>
+        <location filename="../ui/mainwindow.ui" line="195"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="20"/>
         <source>Details</source>
-        <translation>Détails</translation>
+        <translation type="vanished">Détails</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="30"/>
         <source>Active</source>
-        <translation>Actifs</translation>
+        <translation type="vanished">Actifs</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="74"/>
+        <location filename="../ui/mainwindow.ui" line="49"/>
         <source>Current</source>
         <translation>Courant</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="221"/>
+        <location filename="../ui/mainwindow.ui" line="202"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="228"/>
+        <location filename="../src/mainwindow.cpp" line="532"/>
         <source>Start</source>
         <translation>Commencer</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="190"/>
+        <location filename="../ui/mainwindow.ui" line="165"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="37"/>
         <source>Top</source>
-        <translation>Avant</translation>
+        <translation type="vanished">Avant</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="68"/>
+        <location filename="../ui/mainwindow.ui" line="43"/>
         <source>Timer</source>
         <translation>Chronomètre</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="96"/>
-        <location filename="../ui/mainwindow.ui" line="113"/>
-        <location filename="../ui/mainwindow.ui" line="154"/>
-        <location filename="../ui/mainwindow.ui" line="171"/>
+        <location filename="../ui/mainwindow.ui" line="71"/>
+        <location filename="../ui/mainwindow.ui" line="88"/>
+        <location filename="../ui/mainwindow.ui" line="129"/>
+        <location filename="../ui/mainwindow.ui" line="146"/>
         <source>:</source>
         <translation>:</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="132"/>
+        <location filename="../ui/mainwindow.ui" line="107"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="200"/>
+        <location filename="../ui/mainwindow.ui" line="177"/>
         <source>Absolute time</source>
         <translation>Temps absolu</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="207"/>
+        <location filename="../ui/mainwindow.ui" line="184"/>
         <source>Color</source>
         <translation>Couleur</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="255"/>
+        <location filename="../ui/mainwindow.ui" line="224"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="289"/>
+        <location filename="../ui/mainwindow.ui" line="247"/>
+        <source>&amp;View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="268"/>
         <source>&amp;About...</source>
         <translation>&amp;A propos...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="297"/>
+        <location filename="../ui/mainwindow.ui" line="276"/>
         <source>About Qt</source>
         <translation>A propos de Qt</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="305"/>
+        <location filename="../ui/mainwindow.ui" line="284"/>
         <source>Check updates...</source>
         <translation>Vérifier mises-à-jour...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="310"/>
+        <location filename="../ui/mainwindow.ui" line="289"/>
         <source>&amp;Open...</source>
         <translation>&amp;Ouvrir...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="315"/>
+        <location filename="../ui/mainwindow.ui" line="294"/>
         <source>&amp;Save</source>
         <translation>&amp;Enregistrer</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="320"/>
+        <location filename="../ui/mainwindow.ui" line="299"/>
         <source>Save &amp;as...</source>
         <translation>Enregistrer &amp;sous...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="325"/>
+        <location filename="../ui/mainwindow.ui" line="304"/>
         <source>&amp;New</source>
         <translation>&amp;Nouveau</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="281"/>
+        <location filename="../ui/mainwindow.ui" line="315"/>
+        <source>Always on top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="323"/>
+        <source>Show only active timers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="334"/>
+        <source>Show details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="342"/>
+        <source>Show minimal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="260"/>
         <source>E&amp;xit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="463"/>
+        <location filename="../src/mainwindow.cpp" line="566"/>
         <source>About %1</source>
         <translation>A propos de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="467"/>
+        <location filename="../src/mainwindow.cpp" line="570"/>
         <source>Author: %1</source>
         <translation>Auteur : %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="468"/>
+        <location filename="../src/mainwindow.cpp" line="571"/>
         <source>Support: %1</source>
         <translation>Support technique : %1</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="235"/>
+        <location filename="../src/mainwindow.cpp" line="536"/>
         <source>Stop</source>
         <translation>Arrêter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="178"/>
+        <location filename="../src/mainwindow.cpp" line="190"/>
         <source>Open timers</source>
         <translation>Ouvrir les chronomètres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="178"/>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="190"/>
+        <location filename="../src/mainwindow.cpp" line="209"/>
         <source>kTimer Files (*.ktf)</source>
         <translation>Fichiers kTimer (*.ktf)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="209"/>
         <source>Save timers</source>
         <translation>Enregistrer les chronomètres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="210"/>
+        <location filename="../src/mainwindow.cpp" line="222"/>
         <source>LCD color</source>
         <translation>Couleur LCD</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="369"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
         <source>End of timer %1 after %2. You can restart it if you need.</source>
         <translation>Fin du chronmètre %1 après %2. Vous pouvez le relancer si besoin.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="369"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
         <source>Unknown #%1</source>
         <translation>Inconnu #%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="368"/>
+        <location filename="../src/mainwindow.cpp" line="433"/>
         <source>kTimer notification</source>
         <translation>Notification kTimer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="465"/>
+        <location filename="../src/mainwindow.cpp" line="528"/>
+        <source>&amp;Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="529"/>
+        <source>Reset timer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="533"/>
+        <source>Start timer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="537"/>
+        <source>Stop timer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="568"/>
         <source>Simple timers manager</source>
         <translation>Gestionnaire simple de chronomètres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="528"/>
+        <location filename="../src/mainwindow.cpp" line="631"/>
         <source>New version</source>
         <translation>Mise-à-jour disponible</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="529"/>
+        <location filename="../src/mainwindow.cpp" line="632"/>
         <source>Version %1 is available since %2.
 
 Do you want to download it now?</source>
@@ -197,12 +239,12 @@ Do you want to download it now?</source>
 Souhaitez-vous la télécharger maintenant ?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="550"/>
+        <location filename="../src/mainwindow.cpp" line="653"/>
         <source>No update found</source>
         <translation>Aucune mise-à-jour trouvée</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="654"/>
         <source>You already have the last %1 version (%2).</source>
         <translation>Vous avez déjà la dernière version de %1 (%2).</translation>
     </message>
@@ -210,10 +252,8 @@ Souhaitez-vous la télécharger maintenant ?</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils_x.cpp" line="106"/>
-        <location filename="../src/utils_win.cpp" line="474"/>
         <source>Whole screen</source>
-        <translation>Ecran complet</translation>
+        <translation type="vanished">Ecran complet</translation>
     </message>
 </context>
 <context>
@@ -237,7 +277,7 @@ Souhaitez-vous la télécharger maintenant ?</translation>
 <context>
     <name>TimerModel</name>
     <message>
-        <location filename="../src/timermodel.cpp" line="100"/>
+        <location filename="../src/timermodel.cpp" line="108"/>
         <source>Timer #%1</source>
         <translation>Chronomètre #%1</translation>
     </message>
