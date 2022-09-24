@@ -20,13 +20,19 @@
 #ifndef TIMERSVIEW_H
 #define TIMERSVIEW_H
 
+#include <QListView>
+
 class TimersView : public QListView
 {
+	Q_OBJECT
+
 public:
-	TimersView(QWidget* parent);
+	TimersView(QWidget* parent = nullptr);
 
 	QSize sizeHint() const override;
 	QSize minimumSizeHint() const override;
+
+	int visibleItemsCount() const;
 };
 
 #endif

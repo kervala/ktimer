@@ -20,7 +20,7 @@
 #include "common.h"
 #include "timersview.h"
 
-TimersView::TimersView(QWidget *parent = nullptr):QListView(parent)
+TimersView::TimersView(QWidget *parent):QListView(parent)
 {
 }
 
@@ -28,6 +28,18 @@ QSize TimersView::sizeHint() const
 {
 	if (model()->rowCount() == 0) return QSize(0, 0);
 
+	//qDebug() << "sizeHint view" << sizeHintForColumn(0);
+
+	return QSize(sizeHintForColumn(0), visibleItemsCount() * sizeHintForRow(0));
+}
+
+QSize TimersView::minimumSizeHint() const
+{
+	return QSize(0, 0);
+}
+
+int TimersView::visibleItemsCount() const
+{
 	int count = 0;
 
 	for (int row = 0, nrow = model()->rowCount(); row < nrow; ++row)
@@ -38,12 +50,5 @@ QSize TimersView::sizeHint() const
 		}
 	}
 
-	return QSize(width(), count * sizeHintForRow(0));
-}
-
-QSize TimersView::minimumSizeHint() const
-{
-	if (model()->rowCount() == 0) return QSize(0, 0);
-
-	return QSize(0, sizeHintForRow(0));
+	return count;
 }
