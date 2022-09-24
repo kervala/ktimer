@@ -78,8 +78,10 @@ m_resetAction(nullptr), m_startAction(nullptr), m_stopAction(nullptr)
 
 	connect(m_ui->nameEdit, &QLineEdit::textChanged, this, &MainWindow::onNameChanged);
 
-	connect(m_ui->detailsCheckBox, &QCheckBox::toggled, this, &MainWindow::onDetailsToggled);
-	connect(m_ui->activeCheckBox, &QCheckBox::toggled, this, &MainWindow::onActiveToggled);
+	m_ui->actionShowDetails->setChecked(true);
+	m_ui->actionShowOnlyActiveTimers->setChecked(false);
+	m_ui->actionAlwaysOnTop->setChecked(true);
+	m_ui->actionShowMinimal->setChecked(false);
 
 	connect(m_ui->actionShowDetails, &QAction::toggled, this, &MainWindow::onDetailsToggled);
 	connect(m_ui->actionShowOnlyActiveTimers, &QAction::toggled, this, &MainWindow::onActiveToggled);

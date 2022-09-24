@@ -11,28 +11,7 @@
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="mainLayout" stretch="0,1,0">
-    <item>
-     <layout class="QHBoxLayout" name="topCheckBoxesHorizontalLayout">
-      <item>
-       <widget class="QCheckBox" name="detailsCheckBox">
-        <property name="text">
-         <string>Details</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="activeCheckBox">
-        <property name="text">
-         <string>Active</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
+   <layout class="QVBoxLayout" name="mainLayout" stretch="1,0">
     <item>
      <widget class="TimersView" name="timersListView">
       <property name="frameShape">
