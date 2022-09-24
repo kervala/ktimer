@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>209</width>
-    <height>382</height>
+    <width>218</width>
+    <height>391</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -16,6 +16,9 @@
      <widget class="TimersView" name="timersListView">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
       <property name="sizeAdjustPolicy">
        <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -212,8 +215,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>209</width>
-     <height>21</height>
+     <width>218</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
