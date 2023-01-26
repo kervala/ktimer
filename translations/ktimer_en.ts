@@ -238,13 +238,6 @@ Do you want to download it now?</translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <source>Whole screen</source>
-        <translation type="vanished">Whole screen</translation>
-    </message>
-</context>
-<context>
     <name>SystrayIcon</name>
     <message>
         <location filename="../src/systrayicon.cpp" line="66"/>

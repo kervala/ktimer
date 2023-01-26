@@ -14,14 +14,6 @@
         <translation>Ajouter</translation>
     </message>
     <message>
-        <source>Details</source>
-        <translation type="vanished">Détails</translation>
-    </message>
-    <message>
-        <source>Active</source>
-        <translation type="vanished">Actifs</translation>
-    </message>
-    <message>
         <location filename="../ui/mainwindow.ui" line="49"/>
         <source>Current</source>
         <translation>Courant</translation>
@@ -40,10 +32,6 @@
         <location filename="../ui/mainwindow.ui" line="165"/>
         <source>Name</source>
         <translation>Nom</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation type="vanished">Avant</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="43"/>
@@ -247,13 +235,6 @@ Souhaitez-vous la télécharger maintenant ?</translation>
         <location filename="../src/mainwindow.cpp" line="654"/>
         <source>You already have the last %1 version (%2).</source>
         <translation>Vous avez déjà la dernière version de %1 (%2).</translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message>
-        <source>Whole screen</source>
-        <translation type="vanished">Ecran complet</translation>
     </message>
 </context>
 <context>
