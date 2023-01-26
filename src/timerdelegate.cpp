@@ -60,7 +60,7 @@ QSize TimerDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
 
 	int height = 40;
 	
-	if (view->model()->property("shrinkable").toBool())
+	if (view->model()->property("shrinkable").toBool() && view->visibleItemsCount() > 0)
 	{
 		height = qMin(qMax(12, view->height() / view->visibleItemsCount()), height);
 	}
